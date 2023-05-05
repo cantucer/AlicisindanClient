@@ -407,7 +407,6 @@ public class User {
      * 
      * @param email to check for
      * @return bool
-     * @throws IOException when a problem occurs during connection.
      * @throws Exception when socket returns unexpected response.
      */
     public static boolean emailExists(String email) throws Exception {
@@ -429,7 +428,6 @@ public class User {
      * 
      * @param phone to check for
      * @return bool
-     * @throws IOException when a problem occurs during connection.
      * @throws Exception when socket returns unexpected response.
      */
     public static boolean phoneExists(String phone) throws Exception {
@@ -451,7 +449,6 @@ public class User {
      * 
      * @param username to check for
      * @return bool
-     * @throws IOException when a problem occurs during connection.
      * @throws Exception when socket returns unexpected response.
      */
     public static boolean usernameExists(String username) throws Exception {
