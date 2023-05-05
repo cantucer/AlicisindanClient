@@ -44,7 +44,7 @@ public class Password {
     
     
     /**
-     * Changes password of an user with given id.
+     * Changes password of the user with given id.
      * 
      * @param id of the user
      * @param oldPassword of the user
@@ -53,7 +53,7 @@ public class Password {
      */
     public static void setPassword(String id, String oldPassword, String newPassword) throws Exception {
         String[] content = new String[]{newPassword};
-        Request req = new Request(Request.RequestType.SetUsername, id, oldPassword, content);
+        Request req = new Request(Request.RequestType.SetPassword, id, oldPassword, content);
  
         Response response = Connection.connect(req);
         
@@ -64,7 +64,28 @@ public class Password {
     
     
     /**
-     * Returns user id of an user with given email.
+     * Resets password of the user with given id AND RETURNS THE NEW PASSWORD!
+     * 
+     * @param id of the user
+     * @return new random password as String
+     * @throws Exception when socket returns unexpected response.
+     */
+    public static String resetPassword(String id) throws Exception {
+        String[] content = new String[]{};
+        Request req = new Request(Request.RequestType.ResetPassword, id, "", content);
+ 
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.SingleString) {
+            throw new Exception();
+        }
+        
+        return response.getContent()[0];
+    }
+    
+    
+    /**
+     * Returns user id of the user with given email.
      * 
      * @param email to check for
      * @return user id as String
@@ -85,7 +106,7 @@ public class Password {
     
     
     /**
-     * Returns user id of an user with given phone.
+     * Returns user id of the user with given phone.
      * 
      * @param phone number to check for
      * @return user id as String
@@ -106,7 +127,7 @@ public class Password {
     
     
     /**
-     * Returns user id of an user with given username.
+     * Returns user id of the user with given username.
      * 
      * @param username to check for
      * @return user id as String

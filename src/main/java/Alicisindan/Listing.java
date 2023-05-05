@@ -244,6 +244,76 @@ public class Listing {
         return creationdate;
     }
     
+    
+    /**
+     * Changes title of a Listing object.
+     * 
+     * @param id of the listing
+     * @param ownerid of the owner
+     * @param password of the owner
+     * @param newTitle for listing
+     * @throws Exception when socket returns unexpected response.
+     */
+    public void setTitle(String id, String ownerid, String password, String newTitle) throws Exception {
+        String[] content = new String[]{id, newTitle};
+        Request req = new Request(Request.RequestType.SetTitle, id, password, content);
+ 
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            throw new Exception();
+        }
+        
+        this.title = newTitle;
+    }
+    
+    
+    /**
+     * Changes description of a Listing object.
+     * 
+     * @param id of the listing
+     * @param ownerid of the owner
+     * @param password of the owner
+     * @param newDescription for listing
+     * @throws Exception when socket returns unexpected response.
+     */
+    public void setDescription(String id, String ownerid, String password, String newDescription) throws Exception {
+        String[] content = new String[]{id, newDescription};
+        Request req = new Request(Request.RequestType.SetDescription, id, password, content);
+ 
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            throw new Exception();
+        }
+        
+        this.title = newDescription;
+    }
+    
+    
+    /**
+     * Changes price of a Listing object.
+     * 
+     * @param id of the listing
+     * @param ownerid of the owner
+     * @param password of the owner
+     * @param newPrice for listing
+     * @throws Exception when socket returns unexpected response.
+     */
+    public void setPrice(String id, String ownerid, String password, String newPrice) throws Exception {
+        String[] content = new String[]{id, newPrice};
+        Request req = new Request(Request.RequestType.SetPrice, id, password, content);
+ 
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            throw new Exception();
+        }
+        
+        this.title = newPrice;
+    }
+    
+    
 
     
        
