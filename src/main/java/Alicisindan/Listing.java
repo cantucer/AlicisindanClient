@@ -9,7 +9,7 @@ package Alicisindan;
  * All getters and setters are non-static. 
  * 
  * @author cantucer2@gmail.com
- * @version 05.05.2023
+ * @version 08.05.2023
  */
 public class Listing {
     

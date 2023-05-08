@@ -13,7 +13,7 @@ package Alicisindan;
  * Password and key data is not stored within the User object.
  * 
  * @author cantucer2@gmail.com
- * @version 05.05.2023
+ * @version 08.05.2023
  */
 public class User {
     
