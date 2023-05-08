@@ -14,7 +14,7 @@ package Alicisindan;
 public class Listing {
     
     // Private instance variables.
-    private String id, ownerid, type, title, description, price, creationdate;
+    private String id, ownerid, type, title, description, price, category, creationdate;
     
     
     // Type variables
@@ -33,15 +33,17 @@ public class Listing {
      * @param title Listing title.
      * @param description Listing description.
      * @param price Listing price.
+     * @param category Listing category.
      * @param creationdate Listing creation date.
      */
-    private Listing (String id, String ownerid, String type, String title, String description, String price, String creationdate) {
+    private Listing (String id, String ownerid, String type, String title, String description, String price, String category, String creationdate) {
         this.id = id;
         this.ownerid = ownerid;
         this.type = type;
         this.title = title;
         this.description = description;
         this.price = price;
+        this.category = category;
         this.creationdate = creationdate;
     }
     
@@ -56,14 +58,16 @@ public class Listing {
      * @param title Listing title.
      * @param description Listing description.
      * @param price Listing price.
+     * @param category Listing category.
      */
-    public Listing (String ownerid, String type, String title, String description, String price) {
+    public Listing (String ownerid, String type, String title, String description, String price, String category) {
         this.id = "";
         this.ownerid = ownerid;
         this.type = type;
         this.title = title;
         this.description = description;
         this.price = price;
+        this.category = category;
         this.creationdate = "";
     }
     
@@ -79,7 +83,7 @@ public class Listing {
      * @throws Exception when socket returns unexpected response.
      */
     public void addListing(String userId, String userPassword) throws Exception {
-        String[] content = new String[]{type, title, description, price};
+        String[] content = new String[]{type, title, description, price, category};
         Request req = new Request(Request.RequestType.AddListing, userId, userPassword, content);
         
         Response response = Connection.connect(req);
@@ -97,7 +101,7 @@ public class Listing {
      * @throws Exception when socket returns unexpected response.
      */
     public static Listing getListing(String id) throws Exception {
-        Request req = new Request(Request.RequestType.GetListing, "", "", new String[]{id});
+        Request req = new Request(Request.RequestType.GetListing, "", "", new String[] {id});
         
         Response response = Connection.connect(req);
         
@@ -107,7 +111,7 @@ public class Listing {
         
         String[] returned = response.getContent();
         
-        return new Listing(returned[0], returned[1], returned[2], returned[3], returned[4], returned[5], returned[6]);
+        return new Listing(returned[0], returned[1], returned[2], returned[3], returned[4], returned[5], returned[6], returned[7]);
     }
     
     
@@ -121,6 +125,7 @@ public class Listing {
      * @param type LISTING TYPE "BUY" OR "SELL", "" FOR NO FILTER!
      * @param limit NUMBER OF LISTINGS TO GET, "" FOR NO FILTER!
      * @return Array of Listing objects.
+     * @throws Exception when socket returns unexpected response.
      */
     public static Listing[] searchListings (String owner, String tag, String title, String type, String limit) throws Exception {
         Request req = new Request(Request.RequestType.SearchListings, "", "", new String[]{owner, tag, title, type, limit});
@@ -134,9 +139,9 @@ public class Listing {
         
         String[] returned = response.getContent();
         
-        Listing[] results = new Listing[returned.length/7];
-        for(int i = 0, j = 0; i<returned.length; i+=7, j++) {
-            results[j] = new Listing(returned[i], returned[i+1], returned[i+2], returned[i+3], returned[i+4], returned[i+5], returned[i+6]);
+        Listing[] results = new Listing[returned.length/8];
+        for(int i = 0, j = 0; i<returned.length; i+=8, j++) {
+            results[j] = new Listing(returned[i], returned[i+1], returned[i+2], returned[i+3], returned[i+4], returned[i+5], returned[i+6], returned[i+7]);
         }
         
         return results;
@@ -146,32 +151,88 @@ public class Listing {
     /**
      * Deletes listing.
      * 
-     * @param userId of owner
+     * @param ownerId of owner
      * @param userPassword of password
+     * @throws Exception when socket returns unexpected response.
      */
-    public void deleteListing(String userId, String userPassword) throws Exception{
-        Request req = new Request(Request.RequestType.DeleteListing, userId, userPassword, new String[]{id});
+    public void deleteListing(String ownerId, String userPassword) throws Exception {
+        Request req = new Request(Request.RequestType.DeleteListing, userId, userPassword, new String[] {getID()});
         
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
             throw new Exception();
         }  
-    }
-    
-    
-    /**
-     * 
-     * @param images
-     * @param userId
-     * @param userPassword 
-     */
-    public void setListingImages(String[] images, String userId, String userPassword) {
         
+        this.id = "";
     }
     
-    // TODO!
-    public void getListingImages() {
+       
+    public String[] getListingImages() throws Exception {
+        Request req = new Request(Request.RequestType.GetListingImages, "", "", new String[] {getID()});
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.ListingImages) {
+            throw new Exception();
+        }
+        
+        String[] returned = response.getContent();
+        
+        return returned;
+    }
+    
+    
+    public void addListingImage(String ownerId, String userPassword, String image) throws Exception {
+        String[] content = new String[]{getID(), image};
+        Request req = new Request(Request.RequestType.AddListingImage, ownerId, userPassword, content);
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            throw new Exception();
+        }
+    }
+    
+    public void removeListingImage(String ownerId, String userPassword, String image) throws Exception {
+        String[] content = new String[]{getID(), image};
+        Request req = new Request(Request.RequestType.RemoveListingImage, ownerId, userPassword, content);
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            throw new Exception();
+        }
+    }
+    
+    public void setListingImages(String ownerId, String userPassword, String[] images) throws Exception {
+        String[] content = new String[images.length+1];
+        content[0] = getID();
+        for(int i = 0; i < images.length; i++) {
+            content[i+1] = images[i];
+        }
+        Request req = new Request(Request.RequestType.SetListingImages, ownerId, userPassword, content);
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            throw new Exception();
+        }
+    }
+    
+    public void resetListingImages() {
+        String[] content = new String[images.length+1];
+        content[0] = getID();
+        for(int i = 0; i < images.length; i++) {
+            content[i+1] = images[i];
+        }
+        Request req = new Request(Request.RequestType.SetListingImages, ownerId, userPassword, content);
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            throw new Exception();
+        }
         
     }
     
@@ -236,6 +297,16 @@ public class Listing {
     
     
     /**
+     * Returns listing's category.
+     * 
+     * @return price in string format
+     */
+    public String getCategory() {
+        return category;
+    }
+    
+    
+    /**
      * Returns listing's creation date.
      * 
      * @return creation date in string format
@@ -248,15 +319,14 @@ public class Listing {
     /**
      * Changes title of a Listing object.
      * 
-     * @param id of the listing
-     * @param ownerid of the owner
+     * @param ownerID of the owner
      * @param password of the owner
      * @param newTitle for listing
      * @throws Exception when socket returns unexpected response.
      */
-    public void setTitle(String id, String ownerid, String password, String newTitle) throws Exception {
-        String[] content = new String[]{id, newTitle};
-        Request req = new Request(Request.RequestType.SetTitle, id, password, content);
+    public void setTitle(String ownerID, String password, String newTitle) throws Exception {
+        String[] content = new String[]{getID(), newTitle};
+        Request req = new Request(Request.RequestType.SetTitle, ownerID, password, content);
  
         Response response = Connection.connect(req);
         
@@ -271,15 +341,14 @@ public class Listing {
     /**
      * Changes description of a Listing object.
      * 
-     * @param id of the listing
-     * @param ownerid of the owner
+     * @param ownerID of the owner
      * @param password of the owner
      * @param newDescription for listing
      * @throws Exception when socket returns unexpected response.
      */
-    public void setDescription(String id, String ownerid, String password, String newDescription) throws Exception {
-        String[] content = new String[]{id, newDescription};
-        Request req = new Request(Request.RequestType.SetDescription, id, password, content);
+    public void setDescription(String ownerID, String password, String newDescription) throws Exception {
+        String[] content = new String[]{getID(), newDescription};
+        Request req = new Request(Request.RequestType.SetDescription, ownerID, password, content);
  
         Response response = Connection.connect(req);
         
@@ -287,22 +356,21 @@ public class Listing {
             throw new Exception();
         }
         
-        this.title = newDescription;
+        this.description = newDescription;
     }
     
     
     /**
      * Changes price of a Listing object.
      * 
-     * @param id of the listing
-     * @param ownerid of the owner
+     * @param ownerID of the owner
      * @param password of the owner
      * @param newPrice for listing
      * @throws Exception when socket returns unexpected response.
      */
-    public void setPrice(String id, String ownerid, String password, String newPrice) throws Exception {
-        String[] content = new String[]{id, newPrice};
-        Request req = new Request(Request.RequestType.SetPrice, id, password, content);
+    public void setPrice(String ownerID, String password, String newPrice) throws Exception {
+        String[] content = new String[]{getID(), newPrice};
+        Request req = new Request(Request.RequestType.SetPrice, ownerID, password, content);
  
         Response response = Connection.connect(req);
         
@@ -310,11 +378,29 @@ public class Listing {
             throw new Exception();
         }
         
-        this.title = newPrice;
+        this.price = newPrice;
     }
     
     
-
-    
-       
+    /**
+     * Changes category of a Listing object.
+     * 
+     * @param ownerID of the owner
+     * @param password of the owner
+     * @param newCategory for listing
+     * @throws Exception when socket returns unexpected response.
+     */
+    public void setCategory(String ownerID, String password, String newCategory) throws Exception {
+        String[] content = new String[]{getID(), newCategory};
+        Request req = new Request(Request.RequestType.SetCategory, ownerID, password, content);
+ 
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            throw new Exception();
+        }
+        
+        this.category = newCategory;
+    }
+         
 }

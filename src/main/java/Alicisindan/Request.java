@@ -26,6 +26,7 @@ public class Request implements java.io.Serializable {
         // User class requests
         RegisterUser,
         GetUser,
+        GetUserWithPassword,
         GetUserImage,
         CheckEmail,
         CheckUsername,
@@ -38,6 +39,12 @@ public class Request implements java.io.Serializable {
         SetEmail,
         SetPhone,
         SetUserImage,
+        DeleteUser,
+        GetFavorites,
+        AddFavorite,
+        RemoveFavorite,
+        SetFavorites,
+        ResetFavorites,
         
         // Listing class requests
         AddListing,
@@ -45,10 +52,14 @@ public class Request implements java.io.Serializable {
         SearchListings,
         DeleteListing,
         GetListingImages,
+        AddListingImage,
+        RemoveListingImage,
         SetListingImages,
+        ResetListingImages,
         SetTitle,
         SetDescription,
         SetPrice,
+        SetCategory,
     };
 
     private final RequestType type;

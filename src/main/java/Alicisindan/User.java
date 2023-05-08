@@ -101,6 +101,8 @@ public class User {
     
     /**
      * Returns a new User object that is imported from database.
+     * The data user set as private won't be accessed and will be seen as "*".
+     * To access such data, use the getUserWithPassword method.
      * 
      * @param id of user
      * @return User object imported from database.
@@ -108,6 +110,37 @@ public class User {
      */
     public static User getUser(String id) throws Exception {
         Request req = new Request(Request.RequestType.GetUser, id, "", new String[0]);
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.UserObject) {
+            throw new Exception();
+        }
+        
+        String[] returned = response.getContent();
+        
+        return new User(returned[0], returned[1], returned[2], returned[3], returned[4], returned[5], returned[6], returned[7], returned[8]);
+    }
+    
+    
+    // THIS METHOD IS NOT WORKING YET!!!! ONLY USE THE ABOVE METHOD FOR NOW!
+    // THIS METHOD IS NOT WORKING YET!!!! ONLY USE THE ABOVE METHOD FOR NOW!
+    // THIS METHOD IS NOT WORKING YET!!!! ONLY USE THE ABOVE METHOD FOR NOW!
+    // THIS METHOD IS NOT WORKING YET!!!! ONLY USE THE ABOVE METHOD FOR NOW!
+    /**
+     * Returns a new User object that is imported from database.
+     * This method also sends the password to the database and uses a different Request type.
+     * The data user set as private can be accessed by this method.
+     * 
+     * @param id of user
+     * @param password of user
+     * @return User object imported from database.
+     * @throws Exception when socket returns unexpected response.
+     * @deprecated 
+     */
+    @Deprecated
+    public static User getUserWithPassowrd(String id, String password) throws Exception {
+        Request req = new Request(Request.RequestType.GetUserWithPassword, id, password, new String[0]);
         
         Response response = Connection.connect(req);
         
@@ -232,14 +265,13 @@ public class User {
     /**
      * Changes username of an User object.
      * 
-     * @param id of the user
      * @param password of the user
      * @param newUsername
      * @throws Exception when socket returns unexpected response.
      */
-    public void setUsername(String id, String password, String newUsername) throws Exception {
+    public void setUsername(String password, String newUsername) throws Exception {
         String[] content = new String[]{newUsername};
-        Request req = new Request(Request.RequestType.SetUsername, id, password, content);
+        Request req = new Request(Request.RequestType.SetUsername, getID(), password, content);
  
         Response response = Connection.connect(req);
         
@@ -254,14 +286,13 @@ public class User {
     /**
      * Changes name of an User object.
      * 
-     * @param id of the user
      * @param password of the user
      * @param newName
      * @throws Exception when socket returns unexpected response.
      */
-    public void setName(String id, String password, String newName) throws Exception {
+    public void setName(String password, String newName) throws Exception {
         String[] content = new String[]{newName};
-        Request req = new Request(Request.RequestType.SetName, id, password, content);
+        Request req = new Request(Request.RequestType.SetName, getID(), password, content);
  
         Response response = Connection.connect(req);
         
@@ -276,14 +307,13 @@ public class User {
     /**
      * Changes surname of an User object.
      * 
-     * @param id of the user
      * @param password of the user
      * @param newSurname
      * @throws Exception when socket returns unexpected response.
      */
-    public void setSurname(String id, String password, String newSurname) throws Exception {
+    public void setSurname(String password, String newSurname) throws Exception {
         String[] content = new String[]{newSurname};
-        Request req = new Request(Request.RequestType.SetSurname, id, password, content);
+        Request req = new Request(Request.RequestType.SetSurname, getID(), password, content);
  
         Response response = Connection.connect(req);
         
@@ -298,14 +328,13 @@ public class User {
     /**
      * Changes birthdate of an User object.
      * 
-     * @param id of the user
      * @param password of the user
      * @param newBirthdate
      * @throws Exception when socket returns unexpected response.
      */
-    public void setBirthdate(String id, String password, String newBirthdate) throws Exception {
+    public void setBirthdate(String password, String newBirthdate) throws Exception {
         String[] content = new String[]{newBirthdate};
-        Request req = new Request(Request.RequestType.SetBirthdate, id, password, content);
+        Request req = new Request(Request.RequestType.SetBirthdate, getID(), password, content);
  
         Response response = Connection.connect(req);
         
@@ -320,14 +349,13 @@ public class User {
     /**
      * Changes adddress of an User object.
      * 
-     * @param id of the user
      * @param password of the user
      * @param newAddress
      * @throws Exception when socket returns unexpected response.
      */
-    public void setAddress(String id, String password, String newAddress) throws Exception {
+    public void setAddress(String password, String newAddress) throws Exception {
         String[] content = new String[]{newAddress};
-        Request req = new Request(Request.RequestType.SetAddress, id, password, content);
+        Request req = new Request(Request.RequestType.SetAddress, getID(), password, content);
  
         Response response = Connection.connect(req);
         
@@ -342,14 +370,13 @@ public class User {
     /**
      * Changes email of an User object.
      * 
-     * @param id of the user
      * @param password of the user
      * @param newEmail
      * @throws Exception when socket returns unexpected response.
      */
-    public void setEmail(String id, String password, String newEmail) throws Exception {
+    public void setEmail(String password, String newEmail) throws Exception {
         String[] content = new String[]{newEmail};
-        Request req = new Request(Request.RequestType.SetEmail, id, password, content);
+        Request req = new Request(Request.RequestType.SetEmail, getID(), password, content);
  
         Response response = Connection.connect(req);
         
@@ -364,14 +391,13 @@ public class User {
     /**
      * Changes phone number of an user object.
      * 
-     * @param id of the user
      * @param password of the user
      * @param newPhone
      * @throws Exception when socket returns unexpected response.
      */
-    public void setPhone(String id, String password, String newPhone) throws Exception {
+    public void setPhone(String password, String newPhone) throws Exception {
         String[] content = new String[]{newPhone};
-        Request req = new Request(Request.RequestType.SetPhone, id, password, content);
+        Request req = new Request(Request.RequestType.SetPhone, getID(), password, content);
  
         Response response = Connection.connect(req);
         
@@ -382,17 +408,127 @@ public class User {
         this.phone = newPhone;
     }
     
+    
     /**
      * Changes image of an user object.
      * 
-     * @param id of the user
      * @param password of the user
      * @param newImage
      * @throws Exception when socket returns unexpected response.
      */
-    public void setImage(String id, String password, String newImage) throws Exception {
+    public void setImage(String password, String newImage) throws Exception {
         String[] content = new String[]{newImage};
-        Request req = new Request(Request.RequestType.SetUserImage, id, password, content);
+        Request req = new Request(Request.RequestType.SetUserImage, getID(), password, content);
+ 
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            throw new Exception();
+        }
+    }
+    
+    
+    /**
+     * Deletes the user from database.
+     * 
+     * @param password of the user 
+     * @throws Exception when socket returns unexpected response.
+     */
+    public void deleteUser(String password) throws Exception {
+        Request req = new Request(Request.RequestType.DeleteUser, getID(), password, new String[0]);
+ 
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            throw new Exception();
+        }
+        
+        this.id = "";
+    }
+    
+    
+    /**
+     * Gets the favorite products of the user.
+     * 
+     * @return array of product ids
+     * @throws Exception when socket returns unexpected response.
+     */
+    public String[] getFavorites() throws Exception {
+        Request req = new Request(Request.RequestType.GetFavorites, getID(), "", new String[0]);
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.ListingObjects) {
+            throw new Exception();
+        }
+        
+        String[] returned = response.getContent();
+        
+        return returned;
+    }
+    
+    
+    /**
+     * Adds a product to favorite products of the user.
+     * 
+     * @param password of the user
+     * @param productID of the product
+     * @throws Exception when socket returns unexpected response.
+     */
+    public void addFavorite(String password, String productID) throws Exception {
+        Request req = new Request(Request.RequestType.AddFavorite, getID(), password, new String[] {productID});
+ 
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            throw new Exception();
+        }
+    }
+    
+    
+    /**
+     * Removes a product from the favorite products of the user.
+     * 
+     * @param password of the user
+     * @param productID of the product
+     * @throws Exception when socket returns unexpected response.
+     */
+    public void removeFavorite(String password, String productID) throws Exception {
+        Request req = new Request(Request.RequestType.RemoveFavorite, getID(), password, new String[] {productID});
+ 
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            throw new Exception();
+        }
+    }
+    
+    
+    /**
+     * Sets the favorite products list of an user.
+     * 
+     * @param password of the user
+     * @param productIDs of the products
+     * @throws Exception when socket returns unexpected response.
+     */
+    public void setFavorites(String password, String[] productIDs) throws Exception {
+        Request req = new Request(Request.RequestType.SetFavorites, getID(), password,productIDs);
+ 
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            throw new Exception();
+        }
+    }
+    
+    
+    /**
+     * Resets the favorite products list of an user.
+     * 
+     * @param password of the user
+     * @throws Exception when socket returns unexpected response.
+     */
+    public void resetFavorites(String password) throws Exception {
+        Request req = new Request(Request.RequestType.ResetFavorites, getID(), password, new String[0]);
  
         Response response = Connection.connect(req);
         
