@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"Alicisindan","l":"Connection"},{"p":"Alicisindan","l":"Listing"},{"p":"Alicisindan","l":"Password"},{"p":"Alicisindan","l":"Request"},{"p":"Alicisindan","l":"Request.RequestType"},{"p":"Alicisindan","l":"Response"},{"p":"Alicisindan","l":"Response.ResponseType"},{"p":"Alicisindan","l":"User"}]
