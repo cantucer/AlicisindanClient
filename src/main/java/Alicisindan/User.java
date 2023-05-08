@@ -167,7 +167,7 @@ public class User {
     /**
      * Returns user username.
      * 
-     * @return 
+     * @return username in string format
      */
     public String getUsername() {
         return username;
@@ -266,7 +266,7 @@ public class User {
      * Changes username of an User object.
      * 
      * @param password of the user
-     * @param newUsername
+     * @param newUsername of the user
      * @throws Exception when socket returns unexpected response.
      */
     public void setUsername(String password, String newUsername) throws Exception {
@@ -287,7 +287,7 @@ public class User {
      * Changes name of an User object.
      * 
      * @param password of the user
-     * @param newName
+     * @param newName of the user
      * @throws Exception when socket returns unexpected response.
      */
     public void setName(String password, String newName) throws Exception {
@@ -308,7 +308,7 @@ public class User {
      * Changes surname of an User object.
      * 
      * @param password of the user
-     * @param newSurname
+     * @param newSurname of the user
      * @throws Exception when socket returns unexpected response.
      */
     public void setSurname(String password, String newSurname) throws Exception {
@@ -329,7 +329,7 @@ public class User {
      * Changes birthdate of an User object.
      * 
      * @param password of the user
-     * @param newBirthdate
+     * @param newBirthdate of the user
      * @throws Exception when socket returns unexpected response.
      */
     public void setBirthdate(String password, String newBirthdate) throws Exception {
@@ -350,7 +350,7 @@ public class User {
      * Changes adddress of an User object.
      * 
      * @param password of the user
-     * @param newAddress
+     * @param newAddress of the user
      * @throws Exception when socket returns unexpected response.
      */
     public void setAddress(String password, String newAddress) throws Exception {
@@ -371,7 +371,7 @@ public class User {
      * Changes email of an User object.
      * 
      * @param password of the user
-     * @param newEmail
+     * @param newEmail of the user
      * @throws Exception when socket returns unexpected response.
      */
     public void setEmail(String password, String newEmail) throws Exception {
@@ -392,7 +392,7 @@ public class User {
      * Changes phone number of an user object.
      * 
      * @param password of the user
-     * @param newPhone
+     * @param newPhone of the user
      * @throws Exception when socket returns unexpected response.
      */
     public void setPhone(String password, String newPhone) throws Exception {
@@ -413,7 +413,7 @@ public class User {
      * Changes image of an user object.
      * 
      * @param password of the user
-     * @param newImage
+     * @param newImage of the user
      * @throws Exception when socket returns unexpected response.
      */
     public void setImage(String password, String newImage) throws Exception {

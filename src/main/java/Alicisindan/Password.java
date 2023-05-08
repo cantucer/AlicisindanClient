@@ -48,7 +48,7 @@ public class Password {
      * 
      * @param id of the user
      * @param oldPassword of the user
-     * @param newPassword
+     * @param newPassword of the user
      * @throws Exception when socket returns unexpected response OR WHEN OLD PASSWORD IS WRONG.
      */
     public static void setPassword(String id, String oldPassword, String newPassword) throws Exception {

@@ -152,11 +152,11 @@ public class Listing {
      * Deletes listing.
      * 
      * @param ownerId of owner
-     * @param userPassword of password
+     * @param userPassword of owner
      * @throws Exception when socket returns unexpected response.
      */
     public void deleteListing(String ownerId, String userPassword) throws Exception {
-        Request req = new Request(Request.RequestType.DeleteListing, userId, userPassword, new String[] {getID()});
+        Request req = new Request(Request.RequestType.DeleteListing, ownerId, userPassword, new String[] {getID()});
         
         Response response = Connection.connect(req);
         
@@ -167,7 +167,13 @@ public class Listing {
         this.id = "";
     }
     
-       
+     
+    /**
+     * Gets listing images.
+     * 
+     * @return string array of images
+     * @throws Exception when socket returns unexpected response.
+     */
     public String[] getListingImages() throws Exception {
         Request req = new Request(Request.RequestType.GetListingImages, "", "", new String[] {getID()});
         
@@ -183,6 +189,14 @@ public class Listing {
     }
     
     
+    /**
+     * Adds a new image to the listing's images.
+     * 
+     * @param ownerId of owner
+     * @param userPassword of owner
+     * @param image to add
+     * @throws Exception when socket returns unexpected response. 
+     */
     public void addListingImage(String ownerId, String userPassword, String image) throws Exception {
         String[] content = new String[]{getID(), image};
         Request req = new Request(Request.RequestType.AddListingImage, ownerId, userPassword, content);
@@ -194,6 +208,15 @@ public class Listing {
         }
     }
     
+    
+    /**
+     * Removes an image from the listing's images.
+     * 
+     * @param ownerId of owner
+     * @param userPassword of owner
+     * @param image to remove
+     * @throws Exception when socket returns unexpected response. 
+     */
     public void removeListingImage(String ownerId, String userPassword, String image) throws Exception {
         String[] content = new String[]{getID(), image};
         Request req = new Request(Request.RequestType.RemoveListingImage, ownerId, userPassword, content);
@@ -205,6 +228,15 @@ public class Listing {
         }
     }
     
+    
+    /**
+     * Sets the listing's images.
+     * 
+     * @param ownerId of owner
+     * @param userPassword of owner
+     * @param images to set
+     * @throws Exception when socket returns unexpected response. 
+     */
     public void setListingImages(String ownerId, String userPassword, String[] images) throws Exception {
         String[] content = new String[images.length+1];
         content[0] = getID();
@@ -220,20 +252,22 @@ public class Listing {
         }
     }
     
-    public void resetListingImages() {
-        String[] content = new String[images.length+1];
-        content[0] = getID();
-        for(int i = 0; i < images.length; i++) {
-            content[i+1] = images[i];
-        }
-        Request req = new Request(Request.RequestType.SetListingImages, ownerId, userPassword, content);
+    
+    /**
+     * Resets the listing's images.
+     * 
+     * @param ownerId of owner
+     * @param userPassword of owner
+     * @throws Exception when socket returns unexpected response. 
+     */
+    public void resetListingImages(String ownerId, String userPassword) throws Exception {
+        Request req = new Request(Request.RequestType.ResetListingImages, ownerId, userPassword, new String[0]);
         
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
             throw new Exception();
         }
-        
     }
     
     /**
