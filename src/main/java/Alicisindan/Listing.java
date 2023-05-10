@@ -88,6 +88,13 @@ public class Listing {
         
         Response response = Connection.connect(req);
         
+        try {
+            this.id = response.getContent()[0];
+            this.creationdate = response.getContent()[1];
+        }
+        catch(Exception e) {
+        }
+        
         if(response.getType() != Response.ResponseType.Success) {
             throw new Exception();
         }
@@ -133,7 +140,6 @@ public class Listing {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.ListingObjects) {
-            System.out.println(response.getType());
             throw new Exception();
         }
         
@@ -204,6 +210,7 @@ public class Listing {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
+            System.out.println(response.getType());
             throw new Exception();
         }
     }
@@ -224,6 +231,7 @@ public class Listing {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
+            System.out.println(response.getType());
             throw new Exception();
         }
     }
