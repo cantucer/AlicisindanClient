@@ -14,7 +14,7 @@ package Alicisindan;
 public class Listing {
     
     // Private instance variables.
-    private String id, ownerid, type, title, description, price, category, creationdate;
+    private String id, ownerid, type, title, description, price, category, location, creationdate;
     
     
     // Type variables
@@ -34,9 +34,10 @@ public class Listing {
      * @param description Listing description.
      * @param price Listing price.
      * @param category Listing category.
+     * @param location Listing location.
      * @param creationdate Listing creation date.
      */
-    private Listing (String id, String ownerid, String type, String title, String description, String price, String category, String creationdate) {
+    private Listing (String id, String ownerid, String type, String title, String description, String price, String category, String location, String creationdate) {
         this.id = id;
         this.ownerid = ownerid;
         this.type = type;
@@ -44,6 +45,7 @@ public class Listing {
         this.description = description;
         this.price = price;
         this.category = category;
+        this.location = location;
         this.creationdate = creationdate;
     }
     
@@ -59,8 +61,9 @@ public class Listing {
      * @param description Listing description.
      * @param price Listing price.
      * @param category Listing category.
+     * @param location Listing location.
      */
-    public Listing (String ownerid, String type, String title, String description, String price, String category) {
+    public Listing (String ownerid, String type, String title, String description, String price, String category, String location) {
         this.id = "";
         this.ownerid = ownerid;
         this.type = type;
@@ -68,6 +71,7 @@ public class Listing {
         this.description = description;
         this.price = price;
         this.category = category;
+        this.location = location;
         this.creationdate = "";
     }
     
@@ -87,7 +91,7 @@ public class Listing {
             throw new AlicisindanException(AlicisindanException.ExceptionType.WrongID);
         }
         
-        String[] content = new String[]{type, title, description, price, category};
+        String[] content = new String[]{type, title, description, price, category, location};
         Request req = new Request(Request.RequestType.AddListing, userId, userPassword, content);
         
         Response response = Connection.connect(req);
@@ -138,7 +142,7 @@ public class Listing {
         
         String[] returned = response.getContent();
         
-        return new Listing(returned[0], returned[1], returned[2], returned[3], returned[4], returned[5], returned[6], returned[7]);
+        return new Listing(returned[0], returned[1], returned[2], returned[3], returned[4], returned[5], returned[6], returned[7], returned[8]);
     }
     
     
@@ -174,9 +178,9 @@ public class Listing {
         
         String[] returned = response.getContent();
         
-        Listing[] results = new Listing[returned.length/8];
-        for(int i = 0, j = 0; i<returned.length; i+=8, j++) {
-            results[j] = new Listing(returned[i], returned[i+1], returned[i+2], returned[i+3], returned[i+4], returned[i+5], returned[i+6], returned[i+7]);
+        Listing[] results = new Listing[returned.length/9];
+        for(int i = 0, j = 0; i<returned.length; i+=9, j++) {
+            results[j] = new Listing(returned[i], returned[i+1], returned[i+2], returned[i+3], returned[i+4], returned[i+5], returned[i+6], returned[i+7], returned[i+8]);
         }
         
         return results;
@@ -366,7 +370,7 @@ public class Listing {
     /**
      * Returns listing's owner's id.
      * 
-     * @return id in string format
+     * @return owner id in string format
      */
     public String getOwnerID() {
         return ownerid;
@@ -416,10 +420,20 @@ public class Listing {
     /**
      * Returns listing's category.
      * 
-     * @return price in string format
+     * @return category in string format
      */
     public String getCategory() {
         return category;
+    }
+    
+    
+    /**
+     * Returns listing's location.
+     * 
+     * @return location in string format
+     */
+    public String getLocation() {
+        return location;
     }
     
     
@@ -550,6 +564,36 @@ public class Listing {
         }
         
         this.category = newCategory;
+    }
+    
+    
+    /**
+     * Changes location of a Listing object.
+     * 
+     * @param ownerID of the owner
+     * @param password of the owner
+     * @param newLocation for listing
+     * @throws Exception when socket returns unexpected response.
+     */
+    public void setLocation(String ownerID, String password, String newLocation) throws Exception {
+        String[] content = new String[]{getID(), newLocation};
+        Request req = new Request(Request.RequestType.SetCategory, ownerID, password, content);
+ 
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
+        
+        this.location = newLocation;
     }
          
 }
