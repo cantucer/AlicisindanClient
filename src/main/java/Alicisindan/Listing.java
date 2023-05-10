@@ -87,7 +87,7 @@ public class Listing {
      * @throws Exception when socket returns unexpected response.
      */
     public void addListing(String userId, String userPassword) throws Exception {
-        if(!userId.equals(this.id)) {
+        if(!userId.equals(this.ownerid)) {
             throw new AlicisindanException(AlicisindanException.ExceptionType.WrongID);
         }
         
