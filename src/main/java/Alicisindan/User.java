@@ -101,7 +101,15 @@ public class User {
         }
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
     }
     
@@ -121,7 +129,15 @@ public class User {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.UserObject) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         String[] returned = response.getContent();
@@ -260,7 +276,15 @@ public class User {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.UserImage) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         String[] returned = response.getContent();
@@ -283,7 +307,15 @@ public class User {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         this.username = newUsername;
@@ -304,7 +336,15 @@ public class User {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         this.name = newName;
@@ -325,7 +365,15 @@ public class User {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         this.surname = newSurname;
@@ -346,7 +394,15 @@ public class User {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         this.birthdate = newBirthdate;
@@ -367,7 +423,15 @@ public class User {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         this.address = newAddress;
@@ -388,7 +452,15 @@ public class User {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         this.email = newEmail;
@@ -409,7 +481,15 @@ public class User {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         this.phone = newPhone;
@@ -430,7 +510,15 @@ public class User {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
     }
     
@@ -447,7 +535,15 @@ public class User {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         this.id = "";
@@ -465,7 +561,15 @@ public class User {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.ListingObjects) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         String[] returned = response.getContent();
@@ -487,7 +591,15 @@ public class User {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
     }
     
@@ -505,7 +617,15 @@ public class User {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
     }
     
@@ -523,7 +643,15 @@ public class User {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
     }
     
@@ -540,7 +668,15 @@ public class User {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
     }
     
@@ -559,7 +695,15 @@ public class User {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Boolean) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         return response.getContent()[0].equals("true");
@@ -580,7 +724,15 @@ public class User {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Boolean) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         return response.getContent()[0].equals("true");
@@ -601,7 +753,15 @@ public class User {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Boolean) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         return response.getContent()[0].equals("true");

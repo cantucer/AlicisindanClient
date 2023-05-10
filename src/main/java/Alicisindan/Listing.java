@@ -9,7 +9,7 @@ package Alicisindan;
  * All getters and setters are non-static. 
  * 
  * @author cantucer2@gmail.com
- * @version 08.05.2023
+ * @version 10.05.2023
  */
 public class Listing {
     
@@ -83,6 +83,10 @@ public class Listing {
      * @throws Exception when socket returns unexpected response.
      */
     public void addListing(String userId, String userPassword) throws Exception {
+        if(!userId.equals(this.id)) {
+            throw new AlicisindanException(AlicisindanException.ExceptionType.WrongID);
+        }
+        
         String[] content = new String[]{type, title, description, price, category};
         Request req = new Request(Request.RequestType.AddListing, userId, userPassword, content);
         
@@ -96,7 +100,15 @@ public class Listing {
         }
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
     }
     
@@ -113,7 +125,15 @@ public class Listing {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.ListingObject) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         String[] returned = response.getContent();
@@ -126,21 +146,30 @@ public class Listing {
      * Searches for Listing objects in database.
      * 
      * FOR BELOW PARAMETERS, YOU CAN USE NULL INSTEAD OF ""!
-     * @param owner OWNER ID TO SEARCH FOR LISTING OWNER, "" FOR NO FILTER!
-     * @param tag TAGS TO SEARCH FOR, SEPERATE TAGS WITH ;, "" FOR NO FILTER!
+     * @param owner OWNER ID TO SEARCH FOR LISTING OWNER, "" FOR NO FILTER! 
+     * @param categories TAGS TO SEARCH FOR, SEPERATE TAGS WITH ;, "" FOR NO FILTER! SEPERATE CATEGORIES WITH ";"
      * @param title LISTING TITLE TO SEARCH FOR, "" FOR NO FILTER!
      * @param type LISTING TYPE "BUY" OR "SELL", "" FOR NO FILTER!
+     * @param order ORDER OF THE LISTINGS, "" FOR NO FILTER! POSSIBLE INPUTS: "NewestFirst", "OldestFirst", "CheapestFirst", "ExpensiveFirst"
      * @param limit NUMBER OF LISTINGS TO GET, "" FOR NO FILTER!
      * @return Array of Listing objects.
      * @throws Exception when socket returns unexpected response.
      */
-    public static Listing[] searchListings (String owner, String tag, String title, String type, String limit) throws Exception {
-        Request req = new Request(Request.RequestType.SearchListings, "", "", new String[]{owner, tag, title, type, limit});
+    public static Listing[] searchListings (String owner, String categories, String title, String type, String order, String limit) throws Exception {
+        Request req = new Request(Request.RequestType.SearchListings, "", "", new String[]{owner, categories, title, type, order, limit});
         
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.ListingObjects) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         String[] returned = response.getContent();
@@ -167,7 +196,15 @@ public class Listing {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }  
         
         this.id = "";
@@ -186,7 +223,15 @@ public class Listing {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.ListingImages) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         String[] returned = response.getContent();
@@ -210,8 +255,15 @@ public class Listing {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            System.out.println(response.getType());
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
     }
     
@@ -231,8 +283,15 @@ public class Listing {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            System.out.println(response.getType());
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
     }
     
@@ -256,7 +315,15 @@ public class Listing {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
     }
     
@@ -274,7 +341,15 @@ public class Listing {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
     }
     
@@ -373,7 +448,15 @@ public class Listing {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         this.title = newTitle;
@@ -395,7 +478,15 @@ public class Listing {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         this.description = newDescription;
@@ -417,7 +508,15 @@ public class Listing {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         this.price = newPrice;
@@ -439,7 +538,15 @@ public class Listing {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         this.category = newCategory;

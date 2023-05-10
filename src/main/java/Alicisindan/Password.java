@@ -38,7 +38,15 @@ public class Password {
             return false;
         }
         else {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
     }
     
@@ -58,7 +66,15 @@ public class Password {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.Success) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
     }
     
@@ -77,7 +93,15 @@ public class Password {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.SingleString) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         return response.getContent()[0];
@@ -98,7 +122,15 @@ public class Password {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.SingleString) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         return response.getContent()[0];
@@ -119,7 +151,15 @@ public class Password {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.SingleString) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         return response.getContent()[0];
@@ -140,7 +180,15 @@ public class Password {
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.SingleString) {
-            throw new Exception();
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
         }
         
         return response.getContent()[0];
