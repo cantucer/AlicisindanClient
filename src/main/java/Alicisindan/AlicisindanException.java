@@ -16,7 +16,8 @@ public class AlicisindanException extends Exception {
         WrongID,
         WrongPassword,
         ServerError,
-        UnexpectedResponseType,    
+        UnexpectedResponseType,
+        SearchFilterMisusage;
     }
     
     public AlicisindanException(ExceptionType type, String message) {

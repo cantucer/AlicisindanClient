@@ -14,12 +14,16 @@ package Alicisindan;
 public class Listing {
     
     // Private instance variables.
-    private String id, ownerid, type, title, description, price, category, location, creationdate;
+    private String id, ownerid, type, title, description, price, category, location, creationdate, condition;
     
     
-    // Type variables
-    public static final String SELL = "sell";
-    public static final String BUY = "buy";
+    // Variables to use while applying search filter.
+    public final String SELL = "sell";
+    public final String BUY = "buy";
+    public final String NEWESTFIRST = "NewestFirst";
+    public final String OLDESTFIRST = "OldesFirst";
+    public final String CHEAPFIRST = "CheapFirst";
+    public final String EXPENSIVEFIRST = "ExpensiveFirst";
 
     
     /**
@@ -36,8 +40,9 @@ public class Listing {
      * @param category Listing category.
      * @param location Listing location.
      * @param creationdate Listing creation date.
+     * @param condition Listing's condition.
      */
-    private Listing (String id, String ownerid, String type, String title, String description, String price, String category, String location, String creationdate) {
+    private Listing (String id, String ownerid, String type, String title, String description, String price, String category, String location, String creationdate, String condition) {
         this.id = id;
         this.ownerid = ownerid;
         this.type = type;
@@ -47,6 +52,7 @@ public class Listing {
         this.category = category;
         this.location = location;
         this.creationdate = creationdate;
+        this.condition = condition;
     }
     
     
@@ -62,8 +68,9 @@ public class Listing {
      * @param price Listing price.
      * @param category Listing category.
      * @param location Listing location.
+     * @param condition Listing's condition.
      */
-    public Listing (String ownerid, String type, String title, String description, String price, String category, String location) {
+    public Listing (String ownerid, String type, String title, String description, String price, String category, String location, String condition) {
         this.id = "";
         this.ownerid = ownerid;
         this.type = type;
@@ -73,6 +80,7 @@ public class Listing {
         this.category = category;
         this.location = location;
         this.creationdate = "";
+        this.condition = condition;
     }
     
     
@@ -91,7 +99,7 @@ public class Listing {
             throw new AlicisindanException(AlicisindanException.ExceptionType.WrongID);
         }
         
-        String[] content = new String[]{type, title, description, price, category, location};
+        String[] content = new String[]{type, title, description, price, category, location, condition};
         Request req = new Request(Request.RequestType.AddListing, userId, userPassword, content);
         
         Response response = Connection.connect(req);
@@ -142,25 +150,70 @@ public class Listing {
         
         String[] returned = response.getContent();
         
-        return new Listing(returned[0], returned[1], returned[2], returned[3], returned[4], returned[5], returned[6], returned[7], returned[8]);
+        return new Listing(returned[0], returned[1], returned[2], returned[3], returned[4], returned[5], returned[6], returned[7], returned[8], returned[9]);
     }
     
     
     /**
-     * Searches for Listing objects in database.
+     * Searches for Listing objects in database. For any parameter, use the null keywoard for no filter.
      * 
-     * FOR BELOW PARAMETERS, YOU CAN USE NULL INSTEAD OF ""!
-     * @param owner OWNER ID TO SEARCH FOR LISTING OWNER, "" FOR NO FILTER! 
-     * @param categories TAGS TO SEARCH FOR, SEPERATE TAGS WITH ;, "" FOR NO FILTER! SEPERATE CATEGORIES WITH ";"
-     * @param title LISTING TITLE TO SEARCH FOR, "" FOR NO FILTER!
-     * @param type LISTING TYPE "BUY" OR "SELL", "" FOR NO FILTER!
-     * @param order ORDER OF THE LISTINGS, "" FOR NO FILTER! POSSIBLE INPUTS: "NewestFirst", "OldestFirst", "CheapestFirst", "ExpensiveFirst"
-     * @param limit NUMBER OF LISTINGS TO GET, "" FOR NO FILTER!
+     * 
+     * @param ownerID to filter for.
+     * @param categories to filter for. Seperate multiple categories with ";".
+     * @param exactTitle to filter for.
+     * @param searchedTitle to filter for. Will return listings with similar titles too. Don't use both exactTitle and searchedTitle parameters!
+     * @param type to filter for. Listing.SELL or Listing.BUY
+     * @param condition to filter for.
+     * @param order to get listings with. POSSIBLE INPUTS: Listing.NEWESTFIRST, Listing.OLDESTFIRST, Listing.CHEAPFIRST, Listing.EXPENSIVEFIRST
+     * @param offset Number of listings to skip while getting listings.
+     * @param limit Number of listigns to get.
      * @return Array of Listing objects.
      * @throws Exception when socket returns unexpected response.
      */
-    public static Listing[] searchListings (String owner, String categories, String title, String type, String order, String limit) throws Exception {
-        Request req = new Request(Request.RequestType.SearchListings, "", "", new String[]{owner, categories, title, type, order, limit});
+    public static Listing[] findListings (String ownerID, String categories, String exactTitle, String searchedTitle, String type, String condition, String order, String offset, String limit) throws Exception {
+        if (ownerID.equals("")) {
+            ownerID = null;
+        }
+        if (categories.equals("")) {
+            categories = null;
+        }
+        if (exactTitle.equals("")) {
+            exactTitle = null;
+        }
+        if (searchedTitle.equals("")) {
+            searchedTitle = null;
+        }
+        if (type.equals("")) {
+            type = null;
+        }
+        if (condition.equals("")) {
+            condition = null;
+        }
+        if (order.equals("")) {
+            order = null;
+        }
+        if (offset.equals("")) {
+            offset = null;
+        }
+        if (limit.equals("")) {
+            limit = null;
+        }
+        
+        if (exactTitle != null && searchedTitle != null) {
+            throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+        }
+        if (type != null) {
+            if (!type.equals("buy") && !type.equals("sell")) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+            }
+        }
+        if (order != null) {
+            if (!order.equals("NewestFirst") && !order.equals("OldestFirst") && !order.equals("CheapFirst") && !order.equals("ExpensiveFirst")) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+            }
+        }
+        
+        Request req = new Request(Request.RequestType.FindListings, "", "", new String[]{ownerID, categories, exactTitle, searchedTitle, type, condition, order, offset, limit});
         
         Response response = Connection.connect(req);
         
@@ -178,12 +231,92 @@ public class Listing {
         
         String[] returned = response.getContent();
         
-        Listing[] results = new Listing[returned.length/9];
-        for(int i = 0, j = 0; i<returned.length; i+=9, j++) {
-            results[j] = new Listing(returned[i], returned[i+1], returned[i+2], returned[i+3], returned[i+4], returned[i+5], returned[i+6], returned[i+7], returned[i+8]);
+        Listing[] results = new Listing[returned.length/10];
+        for(int i = 0, j = 0; i<returned.length; i+=10, j++) {
+            results[j] = new Listing(returned[i], returned[i+1], returned[i+2], returned[i+3], returned[i+4], returned[i+5], returned[i+6], returned[i+7], returned[i+8], returned[i+9]);
         }
         
         return results;
+    }
+    
+    
+    
+    /**
+     * Searches for Listing objects in database. For any parameter, use the null keywoard for no filter.
+     * 
+     * 
+     * @param ownerID to filter for.
+     * @param categories to filter for. Seperate multiple categories with ";".
+     * @param exactTitle to filter for.
+     * @param searchedTitle to filter for. Will return listings with similar titles too. Don't use both exactTitle and searchedTitle parameters!
+     * @param type to filter for. Listing.SELL or Listing.BUY
+     * @param condition to filter for.
+     * @param order to get listings with. POSSIBLE INPUTS: Listing.NEWESTFIRST, Listing.OLDESTFIRST, Listing.CHEAPFIRST, Listing.EXPENSIVEFIRST
+     * @param offset Number of listings to skip while getting listings.
+     * @param limit Number of listigns to get.
+     * @return Array of Listing ids.
+     * @throws Exception when socket returns unexpected response.
+     */
+    public static String[] findListingIDs (String ownerID, String categories, String exactTitle, String searchedTitle, String type, String condition, String order, String offset, String limit) throws Exception {
+        if (ownerID.equals("")) {
+            ownerID = null;
+        }
+        if (categories.equals("")) {
+            categories = null;
+        }
+        if (exactTitle.equals("")) {
+            exactTitle = null;
+        }
+        if (searchedTitle.equals("")) {
+            searchedTitle = null;
+        }
+        if (type.equals("")) {
+            type = null;
+        }
+        if (condition.equals("")) {
+            condition = null;
+        }
+        if (order.equals("")) {
+            order = null;
+        }
+        if (offset.equals("")) {
+            offset = null;
+        }
+        if (limit.equals("")) {
+            limit = null;
+        }
+        
+        if (exactTitle != null && searchedTitle != null) {
+            throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+        }
+        if (type != null) {
+            if (!type.equals("buy") && !type.equals("sell")) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+            }
+        }
+        if (order != null) {
+            if (!order.equals("NewestFirst") && !order.equals("OldestFirst") && !order.equals("CheapFirst") && !order.equals("ExpensiveFirst")) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+            }
+        }
+        
+        Request req = new Request(Request.RequestType.FindListingIDs, "", "", new String[]{ownerID, categories, exactTitle, searchedTitle, type, condition, order, offset, limit});
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.ListingObjects) {
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
+        
+        return response.getContent();
     }
     
     
@@ -448,6 +581,16 @@ public class Listing {
     
     
     /**
+     * Returns listing's condition.
+     * 
+     * @return condition in string format
+     */
+    public String getCondition() {
+        return condition;
+    }
+    
+    
+    /**
      * Changes title of a Listing object.
      * 
      * @param ownerID of the owner
@@ -577,7 +720,7 @@ public class Listing {
      */
     public void setLocation(String ownerID, String password, String newLocation) throws Exception {
         String[] content = new String[]{getID(), newLocation};
-        Request req = new Request(Request.RequestType.SetCategory, ownerID, password, content);
+        Request req = new Request(Request.RequestType.SetLocation, ownerID, password, content);
  
         Response response = Connection.connect(req);
         
@@ -594,6 +737,36 @@ public class Listing {
         }
         
         this.location = newLocation;
+    }
+    
+    
+    /**
+     * Changes condition of a Listing object.
+     * 
+     * @param ownerID of the owner
+     * @param password of the owner
+     * @param newCondition for listing
+     * @throws Exception when socket returns unexpected response.
+     */
+    public void setCondition(String ownerID, String password, String newCondition) throws Exception {
+        String[] content = new String[]{getID(), newCondition};
+        Request req = new Request(Request.RequestType.SetCondition, ownerID, password, content);
+ 
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
+        
+        this.condition = newCondition;
     }
          
 }

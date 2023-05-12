@@ -45,7 +45,7 @@ public class Request implements java.io.Serializable {
         RemoveFavorite,
         SetFavorites,
         ResetFavorites,
-        IsSuramePublic,
+        IsSurnamePublic,
         IsBirthdatePublic,
         IsAddressPublic,
         IsEmailPublic,
@@ -59,7 +59,8 @@ public class Request implements java.io.Serializable {
         // Listing class requests
         AddListing,
         GetListing,
-        SearchListings,
+        FindListings,
+        FindListingIDs,
         DeleteListing,
         GetListingImages,
         AddListingImage,
@@ -71,6 +72,7 @@ public class Request implements java.io.Serializable {
         SetPrice,
         SetCategory,
         SetLocation,
+        SetCondition,
     };
 
     private final RequestType type;
