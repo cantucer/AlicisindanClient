@@ -102,7 +102,7 @@ public class User {
         
         if(response.getType() != Response.ResponseType.Success) {
             if(response.getType() == Response.ResponseType.WrongPassword) {
-                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UserWithParameterExists, response.getContent()[0]);
             }
             else if(response.getType() == Response.ResponseType.Error) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);

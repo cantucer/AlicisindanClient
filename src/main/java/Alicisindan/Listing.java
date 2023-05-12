@@ -304,7 +304,7 @@ public class Listing {
         
         Response response = Connection.connect(req);
         
-        if(response.getType() != Response.ResponseType.ListingObjects) {
+        if(response.getType() != Response.ResponseType.ListingObjectIDs) {
             if(response.getType() == Response.ResponseType.WrongPassword) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
             }
@@ -372,6 +372,35 @@ public class Listing {
         }
         
         String[] returned = response.getContent();
+        
+        return returned;
+    }
+    
+    
+    /**
+     * Gets the first image of a listing.
+     * 
+     * @return string of image
+     * @throws Exception when socket returns unexpected response.
+     */
+    public String getListingsFirstImage() throws Exception {
+                Request req = new Request(Request.RequestType.GetListingsFirstImage, "", "", new String[] {getID()});
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.ListingImage) {
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
+        
+        String returned = response.getContent()[0];
         
         return returned;
     }

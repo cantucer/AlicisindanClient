@@ -4,7 +4,7 @@ package Alicisindan;
  * Request object used for server-client interaction.
  * 
  * @author cantucer2@gmail.com
- * @version 10.05.2023
+ * @version 12.05.2023
  */
 public class Request implements java.io.Serializable {
 
@@ -63,6 +63,7 @@ public class Request implements java.io.Serializable {
         FindListingIDs,
         DeleteListing,
         GetListingImages,
+        GetListingsFirstImage,
         AddListingImage,
         RemoveListingImage,
         SetListingImages,
