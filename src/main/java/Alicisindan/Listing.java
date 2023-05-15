@@ -164,13 +164,16 @@ public class Listing {
      * @param searchedTitle to filter for. Will return listings with similar titles too. Don't use both exactTitle and searchedTitle parameters!
      * @param type to filter for. Listing.SELL or Listing.BUY
      * @param condition to filter for.
+     * @param minPrice to filter for. Integer in String format is needed.
+     * @param maxPrice to filter for. Integer in String format is needed.
+     * @param location to filter for.
      * @param order to get listings with. POSSIBLE INPUTS: Listing.NEWESTFIRST, Listing.OLDESTFIRST, Listing.CHEAPFIRST, Listing.EXPENSIVEFIRST
      * @param offset Number of listings to skip while getting listings.
      * @param limit Number of listigns to get.
      * @return Array of Listing objects.
      * @throws Exception when socket returns unexpected response.
      */
-    public static Listing[] findListings (String ownerID, String categories, String exactTitle, String searchedTitle, String type, String condition, String order, String offset, String limit) throws Exception {
+    public static Listing[] findListings (String ownerID, String categories, String exactTitle, String searchedTitle, String type, String condition, String minPrice, String maxPrice, String location, String order, String offset, String limit) throws Exception {
         if (ownerID.equals("")) {
             ownerID = null;
         }
@@ -213,7 +216,24 @@ public class Listing {
             }
         }
         
-        Request req = new Request(Request.RequestType.FindListings, "", "", new String[]{ownerID, categories, exactTitle, searchedTitle, type, condition, order, offset, limit});
+        try {
+            Double.valueOf(minPrice);
+        }
+        catch(Exception e) {
+            throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+        }
+        try {
+            Double.valueOf(maxPrice);
+        }
+        catch(Exception e) {
+            throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+        }
+        
+        if (Double.valueOf(minPrice) > Double.valueOf(maxPrice)) {
+            throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+        }
+        
+        Request req = new Request(Request.RequestType.FindListings, "", "", new String[]{ownerID, categories, exactTitle, searchedTitle, type, condition, minPrice, maxPrice, location, order, offset, limit});
         
         Response response = Connection.connect(req);
         
@@ -251,14 +271,17 @@ public class Listing {
      * @param searchedTitle to filter for. Will return listings with similar titles too. Don't use both exactTitle and searchedTitle parameters!
      * @param type to filter for. Listing.SELL or Listing.BUY
      * @param condition to filter for.
+     * @param minPrice to filter for. Integer in String format is needed.
+     * @param maxPrice to filter for. Integer in String format is needed.
+     * @param location to filter for.
      * @param order to get listings with. POSSIBLE INPUTS: Listing.NEWESTFIRST, Listing.OLDESTFIRST, Listing.CHEAPFIRST, Listing.EXPENSIVEFIRST
      * @param offset Number of listings to skip while getting listings.
      * @param limit Number of listigns to get.
      * @return Array of Listing ids.
      * @throws Exception when socket returns unexpected response.
      */
-    public static String[] findListingIDs (String ownerID, String categories, String exactTitle, String searchedTitle, String type, String condition, String order, String offset, String limit) throws Exception {
-        if (ownerID.equals("")) {
+    public static String[] findListingIDs (String ownerID, String categories, String exactTitle, String searchedTitle, String type, String condition, String minPrice, String maxPrice, String location, String order, String offset, String limit) throws Exception {
+        if (ownerID.equals("")) { // With the lines below, we try to elininate possible misusages on client side.
             ownerID = null;
         }
         if (categories.equals("")) {
@@ -300,7 +323,24 @@ public class Listing {
             }
         }
         
-        Request req = new Request(Request.RequestType.FindListingIDs, "", "", new String[]{ownerID, categories, exactTitle, searchedTitle, type, condition, order, offset, limit});
+        try {
+            Double.valueOf(minPrice);
+        }
+        catch(Exception e) {
+            throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+        }
+        try {
+            Double.valueOf(maxPrice);
+        }
+        catch(Exception e) {
+            throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+        }
+        
+        if (Double.valueOf(minPrice) > Double.valueOf(maxPrice)) {
+            throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+        }
+        
+        Request req = new Request(Request.RequestType.FindListingIDs, "", "", new String[]{ownerID, categories, exactTitle, searchedTitle, type, condition, minPrice, maxPrice, location, order, offset, limit});
         
         Response response = Connection.connect(req);
         
@@ -316,7 +356,9 @@ public class Listing {
             }
         }
         
-        return response.getContent();
+        String[] returned = response.getContent();
+        
+        return returned;
     }
     
     
@@ -346,6 +388,36 @@ public class Listing {
         
         this.id = "";
     }
+    
+    
+    /**
+     * A STATIC method for getting the showcase elements of a listing.
+     * 
+     * @param id of the listing
+     * @return [image, ownerUsername, type, title]
+     * @throws Exception when socket returns unexpected response.
+     */
+    public static String[] getListingShowcase(String id) throws Exception {
+        Request req = new Request(Request.RequestType.GetListingShowcase, "", "", new String[] {id});
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.ListingShowcase) {
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
+        
+        String[] returned = response.getContent();
+        
+        return returned;
+    } 
     
      
     /**
@@ -384,7 +456,7 @@ public class Listing {
      * @throws Exception when socket returns unexpected response.
      */
     public String getListingsFirstImage() throws Exception {
-                Request req = new Request(Request.RequestType.GetListingsFirstImage, "", "", new String[] {getID()});
+        Request req = new Request(Request.RequestType.GetListingsFirstImage, "", "", new String[] {getID()});
         
         Response response = Connection.connect(req);
         
