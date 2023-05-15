@@ -174,37 +174,47 @@ public class Listing {
      * @throws Exception when socket returns unexpected response.
      */
     public static Listing[] findListings (String ownerID, String categories, String exactTitle, String searchedTitle, String type, String condition, String minPrice, String maxPrice, String location, String order, String offset, String limit) throws Exception {
-        if (ownerID.equals("")) {
+        if (ownerID != null && ownerID.equals("")) {
             ownerID = null;
         }
-        if (categories.equals("")) {
+        if (categories != null && categories.equals("")) {
             categories = null;
         }
-        if (exactTitle.equals("")) {
+        if (exactTitle != null && exactTitle.equals("")) {
             exactTitle = null;
         }
-        if (searchedTitle.equals("")) {
+        if (searchedTitle != null && searchedTitle.equals("")) {
             searchedTitle = null;
         }
-        if (type.equals("")) {
+        if (type != null && type.equals("")) {
             type = null;
         }
-        if (condition.equals("")) {
+        if (condition != null && condition.equals("")) {
             condition = null;
         }
-        if (order.equals("")) {
+        if (minPrice != null && minPrice.equals("")) {
+            minPrice = null;
+        }
+        if (maxPrice != null && maxPrice.equals("")) {
+            maxPrice = null;
+        }
+        if(location != null && location.equals("")) {
+            location = null;
+        }
+        if (order != null && order.equals("")) {
             order = null;
         }
-        if (offset.equals("")) {
+        if (offset != null && offset.equals("")) {
             offset = null;
         }
-        if (limit.equals("")) {
+        if (limit != null && limit.equals("")) {
             limit = null;
         }
         
         if (exactTitle != null && searchedTitle != null) {
             throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
         }
+        
         if (type != null) {
             if (!type.equals("buy") && !type.equals("sell")) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
@@ -216,23 +226,29 @@ public class Listing {
             }
         }
         
-        try {
-            Double.valueOf(minPrice);
+        if(minPrice != null) {
+            try {
+                Double.valueOf(minPrice);
+            }
+            catch(Exception e) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+            }
         }
-        catch(Exception e) {
-            throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+        if(maxPrice != null) {
+            try {
+                Double.valueOf(maxPrice);
+            }
+            catch(Exception e) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+            }
         }
-        try {
-            Double.valueOf(maxPrice);
+
+        if(minPrice != null && maxPrice != null) {
+            if (Double.valueOf(minPrice) > Double.valueOf(maxPrice)) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+            }   
         }
-        catch(Exception e) {
-            throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
-        }
-        
-        if (Double.valueOf(minPrice) > Double.valueOf(maxPrice)) {
-            throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
-        }
-        
+                
         Request req = new Request(Request.RequestType.FindListings, "", "", new String[]{ownerID, categories, exactTitle, searchedTitle, type, condition, minPrice, maxPrice, location, order, offset, limit});
         
         Response response = Connection.connect(req);
@@ -281,37 +297,47 @@ public class Listing {
      * @throws Exception when socket returns unexpected response.
      */
     public static String[] findListingIDs (String ownerID, String categories, String exactTitle, String searchedTitle, String type, String condition, String minPrice, String maxPrice, String location, String order, String offset, String limit) throws Exception {
-        if (ownerID.equals("")) { // With the lines below, we try to elininate possible misusages on client side.
+        if (ownerID != null && ownerID.equals("")) {
             ownerID = null;
         }
-        if (categories.equals("")) {
+        if (categories != null && categories.equals("")) {
             categories = null;
         }
-        if (exactTitle.equals("")) {
+        if (exactTitle != null && exactTitle.equals("")) {
             exactTitle = null;
         }
-        if (searchedTitle.equals("")) {
+        if (searchedTitle != null && searchedTitle.equals("")) {
             searchedTitle = null;
         }
-        if (type.equals("")) {
+        if (type != null && type.equals("")) {
             type = null;
         }
-        if (condition.equals("")) {
+        if (condition != null && condition.equals("")) {
             condition = null;
         }
-        if (order.equals("")) {
+        if (minPrice != null && minPrice.equals("")) {
+            minPrice = null;
+        }
+        if (maxPrice != null && maxPrice.equals("")) {
+            maxPrice = null;
+        }
+        if(location != null && location.equals("")) {
+            location = null;
+        }
+        if (order != null && order.equals("")) {
             order = null;
         }
-        if (offset.equals("")) {
+        if (offset != null && offset.equals("")) {
             offset = null;
         }
-        if (limit.equals("")) {
+        if (limit != null && limit.equals("")) {
             limit = null;
         }
         
         if (exactTitle != null && searchedTitle != null) {
             throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
         }
+        
         if (type != null) {
             if (!type.equals("buy") && !type.equals("sell")) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
@@ -323,21 +349,27 @@ public class Listing {
             }
         }
         
-        try {
-            Double.valueOf(minPrice);
+        if(minPrice != null) {
+            try {
+                Double.valueOf(minPrice);
+            }
+            catch(Exception e) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+            }
         }
-        catch(Exception e) {
-            throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+        if(maxPrice != null) {
+            try {
+                Double.valueOf(maxPrice);
+            }
+            catch(Exception e) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+            }
         }
-        try {
-            Double.valueOf(maxPrice);
-        }
-        catch(Exception e) {
-            throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
-        }
-        
-        if (Double.valueOf(minPrice) > Double.valueOf(maxPrice)) {
-            throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+
+        if(minPrice != null && maxPrice != null) {
+            if (Double.valueOf(minPrice) > Double.valueOf(maxPrice)) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+            }   
         }
         
         Request req = new Request(Request.RequestType.FindListingIDs, "", "", new String[]{ownerID, categories, exactTitle, searchedTitle, type, condition, minPrice, maxPrice, location, order, offset, limit});
