@@ -11,6 +11,8 @@ public class Response implements java.io.Serializable {
     public enum ResponseType {
         Pong,
         UserObject,
+        UserObjects,
+        UserObjectIDs,
         UserImage,
         ListingObject,
         ListingObjects,
@@ -18,9 +20,7 @@ public class Response implements java.io.Serializable {
         ListingShowcase,
         ListingImage,
         ListingImages,
-        ReviewObject,
         ReviewObjects,
-        ReviewObjectIDs,
         Success,
         Error,
         CorrectPassword,

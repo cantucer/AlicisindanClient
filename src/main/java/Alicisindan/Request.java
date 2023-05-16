@@ -55,6 +55,8 @@ public class Request implements java.io.Serializable {
         SetAddressPrivacy,
         SetEmailPrivacy,
         SetPhonePrivacy,
+        FindUsers,
+        FindUserIDs,
         
         // Listing class requests
         AddListing,
@@ -78,11 +80,15 @@ public class Request implements java.io.Serializable {
         
         // Reeview class requests
         AddReview,
-        GetReview,
         CheckReview,
         DeleteReview,
         FindReviews,
-        FindReviewIDs,
+        
+        // Verification class requests
+        SendOTPSms,
+        SendOTPEmail,
+        CheckOTP,
+        
     };
 
     private final RequestType type;
