@@ -11,9 +11,10 @@ package Alicisindan;
  * All getters and setters are non-static. 
  * 
  * Password and key data is not stored within the User object.
+ * Images are not stored within the User object.
  * 
  * @author cantucer2@gmail.com
- * @version 08.05.2023
+ * @version 16.05.2023
  */
 public class User {
     
@@ -685,7 +686,7 @@ public class User {
      * Checks if an email exists in the database.
      * 
      * @param email to check for
-     * @return bool
+     * @return bool answer
      * @throws Exception when socket returns unexpected response.
      */
     public static boolean emailExists(String email) throws Exception {
@@ -714,7 +715,7 @@ public class User {
      * Checks if a phone number exists in the database.
      * 
      * @param phone to check for
-     * @return bool
+     * @return bool answer
      * @throws Exception when socket returns unexpected response.
      */
     public static boolean phoneExists(String phone) throws Exception {
@@ -743,7 +744,7 @@ public class User {
      * Checks if an username exists in the database.
      * 
      * @param username to check for
-     * @return bool
+     * @return bool answer
      * @throws Exception when socket returns unexpected response.
      */
     public static boolean usernameExists(String username) throws Exception {
@@ -765,6 +766,291 @@ public class User {
         }
         
         return response.getContent()[0].equals("true");
+    }
+    
+    
+    /**
+     * Checks if the surname data beloning to user is public.
+     * 
+     * @return bool answer
+     * @throws Exception when socket returns unexpected response.
+     */
+    public boolean isSurnamePublic() throws Exception {
+        Request req = new Request(Request.RequestType.IsSurnamePublic, getID(), "", new String[0]);
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Boolean) {
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
+
+        return response.getContent()[0].equals("true");
+    }
+    
+    
+    /**
+     * Checks if the birthdate data beloning to user is public.
+     * 
+     * @return bool answer
+     * @throws Exception when socket returns unexpected response.
+     */
+    public boolean isBirthdatePublic() throws Exception {
+        Request req = new Request(Request.RequestType.IsBirthdatePublic, getID(), "", new String[0]);
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Boolean) {
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
+
+        return response.getContent()[0].equals("true");
+    }
+    
+    
+    /**
+     * Checks if the address data beloning to user is public.
+     * 
+     * @return bool answer
+     * @throws Exception when socket returns unexpected response.
+     */
+    public boolean isAddressPublic() throws Exception {
+        Request req = new Request(Request.RequestType.IsAddressPublic, getID(), "", new String[0]);
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Boolean) {
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
+
+        return response.getContent()[0].equals("true");
+    }
+    
+    
+    /**
+     * Checks if the email data beloning to user is public.
+     * 
+     * @return bool answer
+     * @throws Exception when socket returns unexpected response.
+     */
+    public boolean isEmailPublic() throws Exception {
+        Request req = new Request(Request.RequestType.IsEmailPublic, getID(), "", new String[0]);
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Boolean) {
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
+
+        return response.getContent()[0].equals("true");
+    }
+    
+    
+    /**
+     * Checks if the phone data beloning to user is public.
+     * 
+     * @return bool answer
+     * @throws Exception when socket returns unexpected response.
+     */
+    public boolean isPhonePublic() throws Exception {
+        Request req = new Request(Request.RequestType.IsPhonePublic, getID(), "", new String[0]);
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Boolean) {
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
+
+        return response.getContent()[0].equals("true");
+    }
+    
+    
+    /**
+     * Changes the surname privacy setting of the user.
+     * 
+     * @param password of the user
+     * @param newSetting boolean true for the data to be public, false for it to be private
+     * @throws Exception when socket returns unexpected response.
+     */
+    public void setSurnamePrivacy(String password, boolean newSetting) throws Exception {
+        String bool = "false";
+        if(newSetting == true) {
+            bool = "true";
+        }
+        Request req = new Request(Request.RequestType.SetSurnamePrivacy, getID(), password, new String[] {bool});
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
+    }
+    
+    
+    /**
+     * Changes the birthday privacy setting of the user.
+     * 
+     * @param password of the user
+     * @param newSetting boolean true for the data to be public, false for it to be private
+     * @throws Exception when socket returns unexpected response.
+     */
+    public void setBirthdatePrivacy(String password, boolean newSetting) throws Exception {
+        String bool = "false";
+        if(newSetting == true) {
+            bool = "true";
+        }
+        Request req = new Request(Request.RequestType.SetBirthdatePrivacy, getID(), password, new String[] {bool});
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
+    }
+    
+    
+    /**
+     * Changes the address privacy setting of the user.
+     * 
+     * @param password of the user
+     * @param newSetting boolean true for the data to be public, false for it to be private
+     * @throws Exception when socket returns unexpected response.
+     */
+    public void setAddressPrivacy(String password, boolean newSetting) throws Exception {
+        String bool = "false";
+        if(newSetting == true) {
+            bool = "true";
+        }
+        Request req = new Request(Request.RequestType.SetAddressPrivacy, getID(), password, new String[] {bool});
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
+    }
+    
+    
+    /**
+     * Changes the email privacy setting of the user.
+     * 
+     * @param password of the user
+     * @param newSetting boolean true for the data to be public, false for it to be private
+     * @throws Exception when socket returns unexpected response.
+     */
+    public void setEmailPrivacy(String password, boolean newSetting) throws Exception {
+        String bool = "false";
+        if(newSetting == true) {
+            bool = "true";
+        }
+        Request req = new Request(Request.RequestType.SetEmailPrivacy, getID(), password, new String[] {bool});
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
+    }
+    
+    
+    /**
+     * Changes the phone privacy setting of the user.
+     * 
+     * @param password of the user
+     * @param newSetting boolean true for the data to be public, false for it to be private
+     * @throws Exception when socket returns unexpected response.
+     */
+    public void setPhonePrivacy(String password, boolean newSetting) throws Exception {
+        String bool = "false";
+        if(newSetting == true) {
+            bool = "true";
+        }
+        Request req = new Request(Request.RequestType.SetPhonePrivacy, getID(), password, new String[] {bool});
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
     }
        
 }

@@ -4,7 +4,7 @@ package Alicisindan;
  * Request object used for server-client interaction.
  * 
  * @author cantucer2@gmail.com
- * @version 15.05.2023
+ * @version 16.05.2023
  */
 public class Request implements java.io.Serializable {
 
@@ -79,11 +79,10 @@ public class Request implements java.io.Serializable {
         // Reeview class requests
         AddReview,
         GetReview,
+        CheckReview,
         DeleteReview,
-        GetReviewsBy,
-        GetReviewsFor,
-        GetReviewIDsBy,
-        GetReviewIDsFor,
+        FindReviews,
+        FindReviewIDs,
     };
 
     private final RequestType type;
