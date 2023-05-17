@@ -271,8 +271,8 @@ public class Listing {
         
         String[] returned = response.getContent();
         
-        Listing[] results = new Listing[returned.length/10];
-        for(int i = 0, j = 0; i<returned.length; i+=10, j++) {
+        Listing[] results = new Listing[returned.length/11];
+        for(int i = 0, j = 0; i<returned.length; i+=11, j++) {
             results[j] = new Listing(returned[i], returned[i+1], returned[i+2], returned[i+3], returned[i+4], returned[i+5], returned[i+6], returned[i+7], returned[i+8], returned[i+9], returned[i+10]);
         }
         
