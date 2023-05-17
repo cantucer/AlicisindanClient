@@ -14,7 +14,7 @@ package Alicisindan;
 public class Listing {
     
     // Private instance variables.
-    private String id, ownerid, type, title, description, price, category, location, creationdate, condition;
+    private String id, ownerid, type, title, description, price, category, location, creationdate, condition, brand;
     
     
     // Variables to use while applying search filter.
@@ -41,8 +41,9 @@ public class Listing {
      * @param location Listing location.
      * @param creationdate Listing creation date.
      * @param condition Listing's condition.
+     * @param brand Listing's brand.
      */
-    private Listing (String id, String ownerid, String type, String title, String description, String price, String category, String location, String creationdate, String condition) {
+    private Listing (String id, String ownerid, String type, String title, String description, String price, String category, String location, String creationdate, String condition, String brand) {
         this.id = id;
         this.ownerid = ownerid;
         this.type = type;
@@ -53,6 +54,7 @@ public class Listing {
         this.location = location;
         this.creationdate = creationdate;
         this.condition = condition;
+        this.brand = brand;
     }
     
     
@@ -69,8 +71,9 @@ public class Listing {
      * @param category Listing category.
      * @param location Listing location.
      * @param condition Listing's condition.
+     * @param brand Listing's brand.
      */
-    public Listing (String ownerid, String type, String title, String description, String price, String category, String location, String condition) {
+    public Listing (String ownerid, String type, String title, String description, String price, String category, String location, String condition, String brand) {
         this.id = "";
         this.ownerid = ownerid;
         this.type = type;
@@ -81,6 +84,7 @@ public class Listing {
         this.location = location;
         this.creationdate = "";
         this.condition = condition;
+        this.brand = brand;
     }
     
     
@@ -99,7 +103,7 @@ public class Listing {
             throw new AlicisindanException(AlicisindanException.ExceptionType.WrongID);
         }
         
-        String[] content = new String[]{type, title, description, price, category, location, condition};
+        String[] content = new String[]{type, title, description, price, category, location, condition, brand};
         Request req = new Request(Request.RequestType.AddListing, userId, userPassword, content);
         
         Response response = Connection.connect(req);
@@ -150,7 +154,7 @@ public class Listing {
         
         String[] returned = response.getContent();
         
-        return new Listing(returned[0], returned[1], returned[2], returned[3], returned[4], returned[5], returned[6], returned[7], returned[8], returned[9]);
+        return new Listing(returned[0], returned[1], returned[2], returned[3], returned[4], returned[5], returned[6], returned[7], returned[8], returned[9], returned[10]);
     }
     
     
@@ -269,7 +273,7 @@ public class Listing {
         
         Listing[] results = new Listing[returned.length/10];
         for(int i = 0, j = 0; i<returned.length; i+=10, j++) {
-            results[j] = new Listing(returned[i], returned[i+1], returned[i+2], returned[i+3], returned[i+4], returned[i+5], returned[i+6], returned[i+7], returned[i+8], returned[i+9]);
+            results[j] = new Listing(returned[i], returned[i+1], returned[i+2], returned[i+3], returned[i+4], returned[i+5], returned[i+6], returned[i+7], returned[i+8], returned[i+9], returned[i+10]);
         }
         
         return results;
@@ -724,6 +728,16 @@ public class Listing {
     
     
     /**
+     * Returns listing's condition.
+     * 
+     * @return condition in string format
+     */
+    public String getBrand() {
+        return brand;
+    }
+    
+    
+    /**
      * Changes title of a Listing object.
      * 
      * @param ownerID of the owner
@@ -900,6 +914,36 @@ public class Listing {
         }
         
         this.condition = newCondition;
+    }
+    
+    
+    /**
+     * Changes brand of a Listing object.
+     * 
+     * @param ownerID of the owner
+     * @param password of the owner
+     * @param newBrand for listing
+     * @throws Exception when socket returns unexpected response.
+     */
+    public void setBrand(String ownerID, String password, String newBrand) throws Exception {
+        String[] content = new String[]{getID(), newBrand};
+        Request req = new Request(Request.RequestType.SetBrand, ownerID, password, content);
+ 
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
+        
+        this.brand = newBrand;
     }
          
 }
