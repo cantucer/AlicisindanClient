@@ -4,7 +4,7 @@ package Alicisindan;
  * Request object used for server-client interaction.
  * 
  * @author cantucer2@gmail.com
- * @version 16.05.2023
+ * @version 17.05.2023
  */
 public class Request implements java.io.Serializable {
 
@@ -83,6 +83,7 @@ public class Request implements java.io.Serializable {
         CheckReview,
         DeleteReview,
         FindReviews,
+        GetAverage,
         
         // Verification class requests
         SendOTPSms,

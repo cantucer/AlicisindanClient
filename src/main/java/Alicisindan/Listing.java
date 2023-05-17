@@ -9,7 +9,7 @@ package Alicisindan;
  * All getters and setters are non-static. 
  * 
  * @author cantucer2@gmail.com
- * @version 10.05.2023
+ * @version 17.05.2023
  */
 public class Listing {
     
@@ -198,7 +198,7 @@ public class Listing {
         if (maxPrice != null && maxPrice.equals("")) {
             maxPrice = null;
         }
-        if(location != null && location.equals("")) {
+        if (location != null && location.equals("")) {
             location = null;
         }
         if (order != null && order.equals("")) {
@@ -321,7 +321,7 @@ public class Listing {
         if (maxPrice != null && maxPrice.equals("")) {
             maxPrice = null;
         }
-        if(location != null && location.equals("")) {
+        if (location != null && location.equals("")) {
             location = null;
         }
         if (order != null && order.equals("")) {

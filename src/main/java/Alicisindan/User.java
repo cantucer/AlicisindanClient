@@ -14,12 +14,17 @@ package Alicisindan;
  * Images are not stored within the User object.
  * 
  * @author cantucer2@gmail.com
- * @version 16.05.2023
+ * @version 17.05.2023
  */
 public class User {
     
     // Private instance variables.
     private String id, username, name, surname, birthdate, address, email, phone, registerdate;
+    
+    
+    // Variables to use while applying search filter.
+    public final String NEWESTFIRST = "NewestFirst";
+    public final String OLDESTFIRST = "OldesFirst";
 
     
     /**
@@ -1051,6 +1056,111 @@ public class User {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
             }
         }
+    }
+    
+    
+    /**
+     * Searches for User objects in database. For any parameter, use the null keywoard for no filter.
+     * 
+     * @param searchedUsername to filter for.
+     * @param order to get users with. POSSIBLE INPUTS: User.NEWESTFIRST, User.OLDESTFIRST
+     * @param offset Number of listings to skip while getting listings.
+     * @param limit Number of listigns to get.
+     * @return Array of User objects.
+     * @throws Exception when socket returns unexpected response.
+     */
+    public static User[] findUsers(String searchedUsername, String order, String offset, String limit) throws Exception {
+        if (searchedUsername != null && searchedUsername.equals("")) {
+            searchedUsername = null;
+        }
+        if (order != null && order.equals("")) {
+            order = null;
+        }
+        if (offset != null && offset.equals("")) {
+            offset = null;
+        }
+        if (limit != null && limit.equals("")) {
+            limit = null;
+        }
+        
+        Request req = new Request(Request.RequestType.FindUsers, "", "", new String[]{searchedUsername, order, offset, limit});
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.UserObjects) {
+            
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
+        
+        String[] returned = response.getContent();
+        
+        User[] results = new User[returned.length/9];
+        for(int i = 0, j = 0; i<returned.length; i+=9, j++) {
+            results[j] = new User(returned[i], returned[i+1], returned[i+2], returned[i+3], returned[i+4], returned[i+5], returned[i+6], returned[i+7], returned[i+8]);
+        }
+        
+        return results;
+    }
+    
+    
+    /**
+     * Searches for User objects in database. For any parameter, use the null keywoard for no filter.
+     * 
+     * @param searchedUsername to filter for.
+     * @param order to get users with. POSSIBLE INPUTS: User.NEWESTFIRST, User.OLDESTFIRST
+     * @param offset Number of listings to skip while getting listings.
+     * @param limit Number of listigns to get.
+     * @return Array of User ids.
+     * @throws Exception when socket returns unexpected response.
+     */
+    public static String[] findUserIDs(String searchedUsername, String order, String offset, String limit) throws Exception {
+        if (searchedUsername != null && searchedUsername.equals("")) {
+            searchedUsername = null;
+        }
+        if (order != null && order.equals("")) {
+            order = null;
+        }
+        if (offset != null && offset.equals("")) {
+            offset = null;
+        }
+        if (limit != null && limit.equals("")) {
+            limit = null;
+        }
+        
+        if (order != null) {
+            if (!order.equals("NewestFirst") && !order.equals("OldestFirst")) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+            }
+        }
+        
+        Request req = new Request(Request.RequestType.FindUserIDs, "", "", new String[]{searchedUsername, order, offset, limit});
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.UserObjects) {
+            
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
+        
+        String[] returned = response.getContent();
+
+        return returned;
     }
        
 }

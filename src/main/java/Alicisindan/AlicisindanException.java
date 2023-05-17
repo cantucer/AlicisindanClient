@@ -19,6 +19,7 @@ public class AlicisindanException extends Exception {
         UnexpectedResponseType,
         SearchFilterMisusage,
         UserWithParameterExists,
+        ReviewExists,
     }
     
     public AlicisindanException(ExceptionType type, String message) {
