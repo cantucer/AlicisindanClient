@@ -9,7 +9,7 @@ package Alicisindan;
  * All getters and setters are non-static. 
  * 
  * @author cantucer2@gmail.com
- * @version 17.05.2023
+ * @version 23.05.2023
  */
 public class Listing {
     
@@ -280,7 +280,6 @@ public class Listing {
     }
     
     
-    
     /**
      * Searches for Listing objects in database. For any parameter, use the null keywoard for no filter.
      * 
@@ -424,13 +423,13 @@ public class Listing {
         
         this.id = "";
     }
-    
+   
     
     /**
      * A STATIC method for getting the showcase elements of a listing.
      * 
      * @param id of the listing
-     * @return [image, ownerUsername, type, title]
+     * @return [ownerID, ownerUsername, listingID, listingImage, listingType, listingTitle]
      * @throws Exception when socket returns unexpected response.
      */
     public static String[] getListingShowcase(String id) throws Exception {
@@ -454,6 +453,129 @@ public class Listing {
         
         return returned;
     } 
+    
+    
+    /**
+     * Searches for Listing objects in database. For any parameter, use the null keywoard for no filter.
+     * 
+     * 
+     * @param ownerID to filter for.
+     * @param categories to filter for. Seperate multiple categories with ";".
+     * @param exactTitle to filter for.
+     * @param searchedTitle to filter for. Will return listings with similar titles too. Don't use both exactTitle and searchedTitle parameters!
+     * @param type to filter for. Listing.SELL or Listing.BUY
+     * @param condition to filter for.
+     * @param minPrice to filter for. Integer in String format is needed.
+     * @param maxPrice to filter for. Integer in String format is needed.
+     * @param location to filter for.
+     * @param order to get listings with. POSSIBLE INPUTS: Listing.NEWESTFIRST, Listing.OLDESTFIRST, Listing.CHEAPFIRST, Listing.EXPENSIVEFIRST
+     * @param offset Number of listings to skip while getting listings.
+     * @param limit Number of listigns to get.
+     * @return Array of Strings arrays: [ownerID, ownerUsername, listingID, listingImage, listingType, listingTitle]
+     * @throws Exception when socket returns unexpected response.
+     */
+    public static String[][] findListingShowcases (String ownerID, String categories, String exactTitle, String searchedTitle, String type, String condition, String minPrice, String maxPrice, String location, String order, String offset, String limit) throws Exception {
+        
+        if (ownerID != null && ownerID.equals("")) {
+            ownerID = null;
+        }
+        if (categories != null && categories.equals("")) {
+            categories = null;
+        }
+        if (exactTitle != null && exactTitle.equals("")) {
+            exactTitle = null;
+        }
+        if (searchedTitle != null && searchedTitle.equals("")) {
+            searchedTitle = null;
+        }
+        if (type != null && type.equals("")) {
+            type = null;
+        }
+        if (condition != null && condition.equals("")) {
+            condition = null;
+        }
+        if (minPrice != null && minPrice.equals("")) {
+            minPrice = null;
+        }
+        if (maxPrice != null && maxPrice.equals("")) {
+            maxPrice = null;
+        }
+        if (location != null && location.equals("")) {
+            location = null;
+        }
+        if (order != null && order.equals("")) {
+            order = null;
+        }
+        if (offset != null && offset.equals("")) {
+            offset = null;
+        }
+        if (limit != null && limit.equals("")) {
+            limit = null;
+        }
+        
+        if (exactTitle != null && searchedTitle != null) {
+            throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+        }
+        
+        if (type != null) {
+            if (!type.equals("buy") && !type.equals("sell")) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+            }
+        }
+        if (order != null) {
+            if (!order.equals("NewestFirst") && !order.equals("OldestFirst") && !order.equals("CheapFirst") && !order.equals("ExpensiveFirst")) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+            }
+        }
+        
+        if(minPrice != null) {
+            try {
+                Double.valueOf(minPrice);
+            }
+            catch(Exception e) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+            }
+        }
+        if(maxPrice != null) {
+            try {
+                Double.valueOf(maxPrice);
+            }
+            catch(Exception e) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+            }
+        }
+
+        if(minPrice != null && maxPrice != null) {
+            if (Double.valueOf(minPrice) > Double.valueOf(maxPrice)) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.SearchFilterMisusage);
+            }   
+        }
+                
+        Request req = new Request(Request.RequestType.FindListingShowcases, "", "", new String[]{ownerID, categories, exactTitle, searchedTitle, type, condition, minPrice, maxPrice, location, order, offset, limit});
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.ListingShowcases) {
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
+        
+        String[] returned = response.getContent();
+        
+        String[][] results = new String[returned.length/6][6];
+        for(int i = 0, j = 0; i<returned.length; i+=6, j++) {
+            results[j] = new String[] {returned[i], returned[i+1], returned[i+2], returned[i+3], returned[i+4], returned[i+5]};
+        }
+
+        return results;
+    }
     
      
     /**

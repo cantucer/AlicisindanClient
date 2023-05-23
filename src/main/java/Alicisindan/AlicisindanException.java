@@ -6,7 +6,7 @@ package Alicisindan;
  * Helpful when trying to find the cause of exception.
  * 
  * @author cantucer2@gmail.com
- * @version 10.05.2023
+ * @version 23.05.2023
  */
 public class AlicisindanException extends Exception {
     
@@ -34,6 +34,12 @@ public class AlicisindanException extends Exception {
     
     public ExceptionType getType() {
         return type;
+    }
+    
+    @Override
+    public void printStackTrace() {
+        System.out.println("SERVER ERROR: " + getType().toString());
+        super.printStackTrace();
     }
         
 }

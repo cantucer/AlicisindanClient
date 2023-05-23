@@ -4,7 +4,7 @@ package Alicisindan;
  * Response object used for server-client interaction.
  * 
  * @author cantucer2@gmail.com
- * @version 16.05.2023
+ * @version 23.05.2023
  */
 public class Response implements java.io.Serializable {
     
@@ -18,6 +18,7 @@ public class Response implements java.io.Serializable {
         ListingObjects,
         ListingObjectIDs,
         ListingShowcase,
+        ListingShowcases,
         ListingImage,
         ListingImages,
         ReviewObjects,
