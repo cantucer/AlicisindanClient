@@ -1169,11 +1169,12 @@ public class User {
     /**
      * Returns user token.
      * 
+     * @param id of the user
      * @return token in string format
      * @throws Exception when socket returns unexpected response.
      */
-    public String getUserToken() throws Exception {
-        Request req = new Request(Request.RequestType.GetToken, getID(), "", new String[0]);
+    public static String getUserToken(String id) throws Exception {
+        Request req = new Request(Request.RequestType.GetToken, id, "", new String[0]);
         Response response = Connection.connect(req);
         
         if(response.getType() != Response.ResponseType.UserToken) {
@@ -1197,13 +1198,14 @@ public class User {
     /**
      * Changes the token of an user object.
      * 
+     * @param id of the user
      * @param password of the user
      * @param newToken of the user
      * @throws Exception when socket returns unexpected response.
      */
-    public void setIUserToken (String password, String newToken) throws Exception {
+    public static void setUserToken (String id, String password, String newToken) throws Exception {
         String[] content = new String[]{newToken};
-        Request req = new Request(Request.RequestType.SetToken, getID(), password, content);
+        Request req = new Request(Request.RequestType.SetToken, id, password, content);
  
         Response response = Connection.connect(req);
         

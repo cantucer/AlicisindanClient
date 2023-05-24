@@ -33,7 +33,7 @@ tasks.named('test') {
 }
 
 // Properties
-version = '2.9.4'
+version = '2.9.5'
 
 tasks.named('jar') {
     manifest {
