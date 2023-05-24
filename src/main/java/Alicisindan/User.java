@@ -14,7 +14,7 @@ package Alicisindan;
  * Images are not stored within the User object.
  * 
  * @author cantucer2@gmail.com
- * @version 17.05.2023
+ * @version 24.05.2023
  */
 public class User {
     
@@ -262,6 +262,7 @@ public class User {
         return phone;
     }
     
+    
     /**
      * Returns user registeration date.
      * 
@@ -270,6 +271,7 @@ public class User {
     public String getRegisterDate() {
         return registerdate;
     }
+    
     
     /**
      * Returns user image.
@@ -1161,6 +1163,61 @@ public class User {
         String[] returned = response.getContent();
 
         return returned;
+    }
+    
+    
+    /**
+     * Returns user token.
+     * 
+     * @return token in string format
+     * @throws Exception when socket returns unexpected response.
+     */
+    public String getUserToken() throws Exception {
+        Request req = new Request(Request.RequestType.GetToken, getID(), "", new String[0]);
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.UserToken) {
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
+        
+        String[] returned = response.getContent();
+        
+        return returned[0];
+    }
+    
+    
+    /**
+     * Changes the token of an user object.
+     * 
+     * @param password of the user
+     * @param newToken of the user
+     * @throws Exception when socket returns unexpected response.
+     */
+    public void setIUserToken (String password, String newToken) throws Exception {
+        String[] content = new String[]{newToken};
+        Request req = new Request(Request.RequestType.SetToken, getID(), password, content);
+ 
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.Success) {
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
     }
        
 }
