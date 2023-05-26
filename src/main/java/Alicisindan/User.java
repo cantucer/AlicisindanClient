@@ -165,9 +165,7 @@ public class User {
      * @param password of user
      * @return User object imported from database.
      * @throws Exception when socket returns unexpected response.
-     * @deprecated 
      */
-    @Deprecated
     public static User getUserWithPassowrd(String id, String password) throws Exception {
         Request req = new Request(Request.RequestType.GetUserWithPassword, id, password, new String[0]);
         

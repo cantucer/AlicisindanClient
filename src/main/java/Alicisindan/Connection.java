@@ -7,7 +7,7 @@ import java.net.*;
  * Server connection class.
  * 
  * @author cantucer2@gmail.com
- * @version 23.02.2023
+ * @version 25.02.2023
  */
 public class Connection implements Runnable {
     
@@ -65,8 +65,7 @@ public class Connection implements Runnable {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
             objectOutputStream.writeObject(request);
 
-            InputStream inputStream = socket.getInputStream();
-            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+            ObjectInputStream objectInputStream = getStream(socket.getInputStream());
             response = (Response) objectInputStream.readObject();
 
             socket.close();
@@ -80,5 +79,17 @@ public class Connection implements Runnable {
         }
         
     }    
+    
+    
+    /**
+     * Used to synchronize Threads.
+     * 
+     * @param inputStream of the socket
+     * @return ObjectInputStream
+     * @throws IOException when something goes as bad as possible.
+     */
+    private synchronized ObjectInputStream getStream(InputStream inputStream) throws IOException {
+        return new ObjectInputStream(inputStream);
+    }
     
 }

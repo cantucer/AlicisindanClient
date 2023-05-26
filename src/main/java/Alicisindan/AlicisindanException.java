@@ -6,7 +6,7 @@ package Alicisindan;
  * Helpful when trying to find the cause of exception.
  * 
  * @author cantucer2@gmail.com
- * @version 23.05.2023
+ * @version 25.05.2023
  */
 public class AlicisindanException extends Exception {
     
@@ -38,7 +38,7 @@ public class AlicisindanException extends Exception {
     
     @Override
     public void printStackTrace() {
-        System.out.println("SERVER ERROR: " + getType().toString());
+        System.out.println("LIBRARY ERROR: " + getType().toString());
         super.printStackTrace();
     }
         
