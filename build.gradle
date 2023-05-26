@@ -33,7 +33,7 @@ tasks.named('test') {
 }
 
 // Properties
-version = '2.9.6'
+version = '2.9.7'
 
 tasks.named('jar') {
     manifest {
@@ -44,4 +44,8 @@ tasks.named('jar') {
 
 java {
     withJavadocJar()
+}
+
+task Javadocs(type: Javadoc) {
+   source = sourceSets.main.allJava
 }
