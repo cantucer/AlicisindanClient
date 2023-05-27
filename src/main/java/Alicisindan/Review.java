@@ -5,7 +5,7 @@ package Alicisindan;
  * Includes every Review getter and setter methods.
  * 
  * @author cantucer2@gmail.com
- * @version 17.05.2023
+ * @version 27.05.2023
  */
 public class Review {
     
@@ -232,7 +232,7 @@ public class Review {
         
         Response response = Connection.connect(req);
         
-        if(response.getType() != Response.ResponseType.UserObjects) {
+        if(response.getType() != Response.ResponseType.ReviewObjects) {
             
             if(response.getType() == Response.ResponseType.WrongPassword) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
@@ -260,15 +260,15 @@ public class Review {
      * Gets the average reting for an user.
      * 
      * @param reviewedid of user.
-     * @return average in double format
+     * @return [average, number of ratings] in double format
      * @throws Exception when socket returns unexpected response.
      */
-    public static double getRatingAverageFor(String reviewedid) throws Exception {
+    public static double[] getRatingAverageFor(String reviewedid) throws Exception {
         Request req = new Request(Request.RequestType.GetAverage, "", "", new String[]{reviewedid});
         
         Response response = Connection.connect(req);
         
-        if(response.getType() != Response.ResponseType.SingleString) {
+        if(response.getType() != Response.ResponseType.DoubleString) {
             
             if(response.getType() == Response.ResponseType.WrongPassword) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
@@ -283,7 +283,7 @@ public class Review {
         
         String[] returned = response.getContent();
         
-        return Double.valueOf(returned[0]);
+        return new double[]{Double.valueOf(returned[0]), Double.valueOf(returned[1])};
     }
     
     

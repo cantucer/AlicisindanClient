@@ -9,7 +9,7 @@ package Alicisindan;
  * All getters and setters are non-static. 
  * 
  * @author cantucer2@gmail.com
- * @version 23.05.2023
+ * @version 27.05.2023
  */
 public class Listing {
     
@@ -413,6 +413,9 @@ public class Listing {
             if(response.getType() == Response.ResponseType.WrongPassword) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
             }
+            else if(response.getType() == Response.ResponseType.WrongID) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongID);
+            }
             else if(response.getType() == Response.ResponseType.Error) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
             }
@@ -654,6 +657,9 @@ public class Listing {
             if(response.getType() == Response.ResponseType.WrongPassword) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
             }
+            else if(response.getType() == Response.ResponseType.WrongID) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongID);
+            }
             else if(response.getType() == Response.ResponseType.Error) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
             }
@@ -681,6 +687,9 @@ public class Listing {
         if(response.getType() != Response.ResponseType.Success) {
             if(response.getType() == Response.ResponseType.WrongPassword) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.WrongID) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongID);
             }
             else if(response.getType() == Response.ResponseType.Error) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
@@ -714,6 +723,9 @@ public class Listing {
             if(response.getType() == Response.ResponseType.WrongPassword) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
             }
+            else if(response.getType() == Response.ResponseType.WrongID) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongID);
+            }
             else if(response.getType() == Response.ResponseType.Error) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
             }
@@ -739,6 +751,9 @@ public class Listing {
         if(response.getType() != Response.ResponseType.Success) {
             if(response.getType() == Response.ResponseType.WrongPassword) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.WrongID) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongID);
             }
             else if(response.getType() == Response.ResponseType.Error) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
@@ -877,6 +892,9 @@ public class Listing {
             if(response.getType() == Response.ResponseType.WrongPassword) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
             }
+            else if(response.getType() == Response.ResponseType.WrongID) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongID);
+            }
             else if(response.getType() == Response.ResponseType.Error) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
             }
@@ -906,6 +924,9 @@ public class Listing {
         if(response.getType() != Response.ResponseType.Success) {
             if(response.getType() == Response.ResponseType.WrongPassword) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.WrongID) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongID);
             }
             else if(response.getType() == Response.ResponseType.Error) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
@@ -937,6 +958,9 @@ public class Listing {
             if(response.getType() == Response.ResponseType.WrongPassword) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
             }
+            else if(response.getType() == Response.ResponseType.WrongID) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongID);
+            }
             else if(response.getType() == Response.ResponseType.Error) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
             }
@@ -966,6 +990,9 @@ public class Listing {
         if(response.getType() != Response.ResponseType.Success) {
             if(response.getType() == Response.ResponseType.WrongPassword) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.WrongID) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongID);
             }
             else if(response.getType() == Response.ResponseType.Error) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
@@ -997,6 +1024,9 @@ public class Listing {
             if(response.getType() == Response.ResponseType.WrongPassword) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
             }
+            else if(response.getType() == Response.ResponseType.WrongID) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongID);
+            }
             else if(response.getType() == Response.ResponseType.Error) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
             }
@@ -1027,6 +1057,9 @@ public class Listing {
             if(response.getType() == Response.ResponseType.WrongPassword) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
             }
+            else if(response.getType() == Response.ResponseType.WrongID) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongID);
+            }
             else if(response.getType() == Response.ResponseType.Error) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
             }
@@ -1056,6 +1089,9 @@ public class Listing {
         if(response.getType() != Response.ResponseType.Success) {
             if(response.getType() == Response.ResponseType.WrongPassword) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.WrongID) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongID);
             }
             else if(response.getType() == Response.ResponseType.Error) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
