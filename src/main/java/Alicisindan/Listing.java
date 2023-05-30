@@ -432,7 +432,7 @@ public class Listing {
      * A STATIC method for getting the showcase elements of a listing.
      * 
      * @param id of the listing
-     * @return [ownerID, ownerUsername, listingID, listingImage, listingType, listingTitle]
+     * @return [ownerID, ownerUsername, listingID, listingImage, listingType, listingTitle, listingPrice]
      * @throws Exception when socket returns unexpected response.
      */
     public static String[] getListingShowcase(String id) throws Exception {
@@ -474,7 +474,7 @@ public class Listing {
      * @param order to get listings with. POSSIBLE INPUTS: Listing.NEWESTFIRST, Listing.OLDESTFIRST, Listing.CHEAPFIRST, Listing.EXPENSIVEFIRST
      * @param offset Number of listings to skip while getting listings.
      * @param limit Number of listigns to get.
-     * @return Array of Strings arrays: [ownerID, ownerUsername, listingID, listingImage, listingType, listingTitle]
+     * @return Array of Strings arrays: [ownerID, ownerUsername, listingID, listingImage, listingType, listingTitle, listingPrice]
      * @throws Exception when socket returns unexpected response.
      */
     public static String[][] findListingShowcases (String ownerID, String categories, String exactTitle, String searchedTitle, String type, String condition, String minPrice, String maxPrice, String location, String order, String offset, String limit) throws Exception {
@@ -572,9 +572,9 @@ public class Listing {
         
         String[] returned = response.getContent();
         
-        String[][] results = new String[returned.length/6][6];
-        for(int i = 0, j = 0; i<returned.length; i+=6, j++) {
-            results[j] = new String[] {returned[i], returned[i+1], returned[i+2], returned[i+3], returned[i+4], returned[i+5]};
+        String[][] results = new String[returned.length/7][7];
+        for(int i = 0, j = 0; i<returned.length; i+=7, j++) {
+            results[j] = new String[] {returned[i], returned[i+1], returned[i+2], returned[i+3], returned[i+4], returned[i+5], returned[i+6]};
         }
 
         return results;

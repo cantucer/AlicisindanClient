@@ -5,7 +5,7 @@ package Alicisindan;
  * Includes every verification method.
  * 
  * @author cantucer2@gmail.com
- * @version 26.05.2023
+ * @version 28.05.2023
  */
 public class Verification {
     
@@ -35,6 +35,9 @@ public class Verification {
         if(response.getType() != Response.ResponseType.SingleString) {
             if(response.getType() == Response.ResponseType.WrongPassword) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.WrongData) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.FunctionOnCooldown);
             }
             else if(response.getType() == Response.ResponseType.Error) {
                 throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);

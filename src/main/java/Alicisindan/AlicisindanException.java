@@ -6,7 +6,7 @@ package Alicisindan;
  * Helpful when trying to find the cause of exception.
  * 
  * @author cantucer2@gmail.com
- * @version 25.05.2023
+ * @version 28.05.2023
  */
 public class AlicisindanException extends Exception {
     
@@ -20,6 +20,7 @@ public class AlicisindanException extends Exception {
         SearchFilterMisusage,
         UserWithParameterExists,
         ReviewExists,
+        FunctionOnCooldown
     }
     
     public AlicisindanException(ExceptionType type, String message) {
