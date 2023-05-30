@@ -459,6 +459,41 @@ public class Listing {
     
     
     /**
+     * A STATIC method for getting the showcase elements of listings.
+     * 
+     * @param ids of the listing
+     * @return Array of Strings arrays: [ownerID, ownerUsername, listingID, listingImage, listingType, listingTitle, listingPrice]
+     * @throws Exception when socket returns unexpected response.
+     */
+    public static String[][] getListingShowcases(String[] ids) throws Exception {
+        Request req = new Request(Request.RequestType.GetListingShowcases, "", "",ids);
+        
+        Response response = Connection.connect(req);
+        
+        if(response.getType() != Response.ResponseType.ListingShowcases) {
+            if(response.getType() == Response.ResponseType.WrongPassword) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.WrongPassword);
+            }
+            else if(response.getType() == Response.ResponseType.Error) {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.ServerError, response.getContent()[0]);
+            }
+            else {
+                throw new AlicisindanException(AlicisindanException.ExceptionType.UnexpectedResponseType);
+            }
+        }
+        
+        String[] returned = response.getContent();
+        
+        String[][] results = new String[returned.length/7][7];
+        for(int i = 0, j = 0; i<returned.length; i+=7, j++) {
+            results[j] = new String[] {returned[i], returned[i+1], returned[i+2], returned[i+3], returned[i+4], returned[i+5], returned[i+6]};
+        }
+
+        return results;
+    } 
+    
+    
+    /**
      * Searches for Listing objects in database. For any parameter, use the null keywoard for no filter.
      * 
      * 
