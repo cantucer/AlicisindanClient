@@ -9,8 +9,7 @@ Everything is designed as a dependency.
 Those classes don't have any dependency.
 
 ## Details
-
-This classes are used to create the library for Android application Alicisindan to work with the server.
+These classes are used to create the library for Android application Alicisindan to work with the server.
 The library needs to be imported by the main application project for it to work. (The released .jar files are used for dependency imports.)
 
 Required classes like User, Listing, Password, Review and Verification are implemented with this library.
