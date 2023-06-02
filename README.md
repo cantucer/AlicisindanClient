@@ -1,5 +1,15 @@
 # AlicisindanClient
 
+## How to use
+Use the built .jar file as a dependency for the Android application package.
+Either the .jar file or the classes can't be run as there is no main method.
+Everything is designed as a dependency.
+
+## Dependencies
+Those classes don't have any dependency.
+
+## Details
+
 This classes are used to create the library for Android application Alicisindan to work with the server.
 The library needs to be imported by the main application project for it to work. (The released .jar files are used for dependency imports.)
 
