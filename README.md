@@ -5,6 +5,10 @@ Use the built .jar file as a dependency for the Android application package.
 Either the .jar file or the classes can't be run as there is no main method.
 Everything is designed as a dependency.
 
+As those classes are used for connection to server, you need to set the correct ip and port values.
+Current values should be correct.
+You can change the server ip and port inside `Connection.java` class.
+
 ## Dependencies
 Those classes don't have any dependency.
 
